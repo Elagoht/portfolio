@@ -63,6 +63,17 @@
   "about": {
     "text": "Product-oriented developer who owns end-to-end systems from architecture to production. Designs and implements high-performance RESTful APIs and backend services with authentication, caching, validation, and database integration in Go and Node.js. Builds cost-efficient modular monoliths and multi-tenant platforms on Linux. Active technical content creator with 160+ published blog posts, 90+ YouTube videos, and a Udemy course. Strong communication from language education background bridges tech and non-tech staff."
   },
+  "index": {
+    "aboutHeading": "Furkan Baytekin",
+    "aboutText": "I'm a Software Developer who has an educational background, so I can teach you how to code. I also describe myself as an open sourcerer. I play the bass guitar and keen on reading books. I obsessed with vinyl records and retro stuff (to get away from the software for a bit).",
+    "hobbies": "Hobbies",
+    "hobbyVinylTitle": "Collecting Vinyl Records",
+    "hobbyVinylDesc": "I'm obsessed with vinyl records. I have a collection of vinyl records and the oldest one is from 1969 original pressing.",
+    "hobbyBassTitle": "Playing Bass Guitar",
+    "hobbyBassDesc": "I've been playing the bass guitar since 2017. I like to compose and play music on my own.",
+    "hobbyBooksTitle": "Reading Books",
+    "hobbyBooksDesc": "I read books to get away from the software for a bit, but I always end up reading about software."
+  },
   "pages": {
     "home": {
       "title": "Furkan Baytekin"

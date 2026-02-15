@@ -3,9 +3,9 @@
   <div class="site-header-inner">
     <a class="site-logo" href="{{localePath "/" .Lang}}">{{if .Name}}{{.Name}}{{else}}Furkan Baytekin{{end}}</a>
     <nav class="site-nav">
-      <a href="{{localePath "/" .Lang}}/about">{{t .Lang "nav.about"}}</a>
-      <a href="{{localePath "/" .Lang}}/blogs">{{t .Lang "nav.blogs"}}</a>
-      <a href="{{localePath "/" .Lang}}/book">{{t .Lang "nav.book"}}</a>
+      <a href="{{localePath "/" .Lang}}/about"><i class="ti ti-user"></i> {{t .Lang "nav.about"}}</a>
+      <a href="{{localePath "/" .Lang}}/blogs"><i class="ti ti-article"></i> {{t .Lang "nav.blogs"}}</a>
+      <a href="{{localePath "/" .Lang}}/book"><i class="ti ti-book"></i> {{t .Lang "nav.book"}}</a>
     </nav>
   </div>
 </header>

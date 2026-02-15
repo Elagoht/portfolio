@@ -8,7 +8,7 @@
 <!-- Hero -->
 <section class="hero">
   <img src="/android-chrome-512x512.png" alt="" class="hero-avatar">
-  <h1 class="hero-name">{{.Name}}</h1>
+  <h1 class="hero-name">{{.AboutHeading}}</h1>
   <div class="hero-titles">
     {{range .Titles}}<span class="hero-title">{{.}}</span>{{end}}
   </div>
@@ -16,7 +16,7 @@
     <span class="dot"></span>
     {{t .Lang "hero.badge"}}
   </div>
-  <p class="hero-sub">{{t .Lang "hero.subtitle"}}</p>
+  <p class="hero-sub">{{.AboutText}}</p>
 
   <div class="hero-actions">
     <a class="btn btn-primary" href="{{localePath "/" .Lang}}/blogs">
@@ -34,6 +34,24 @@
 
 <div class="section-sep"></div>
 
+<!-- Hobbies -->
+<div class="container">
+  <section class="hobbies">
+    <p class="section-label">{{t .Lang "index.hobbies"}}</p>
+    <div class="hobby-grid">
+      {{range .Hobbies}}
+      <div class="hobby-card">
+        <i class="{{.Icon}} hobby-icon"></i>
+        <h3 class="hobby-title">{{.Title}}</h3>
+        <p class="hobby-desc">{{.Description}}</p>
+      </div>
+      {{end}}
+    </div>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
 <!-- Stats -->
 <div class="stats">
   {{range .Stats}}
@@ -44,21 +62,5 @@
   {{end}}
 </div>
 
-<div class="section-sep"></div>
-
-<!-- Blog Categories -->
-<div class="container">
-  <section class="categories">
-    <p class="section-label">{{t .Lang "sections.blogCategories"}}</p>
-    <div class="cat-grid">
-      {{range .BlogCategories}}
-      <a class="cat-card" href="{{.Href}}">
-        <div class="cat-count">{{.Count}}</div>
-        <div class="cat-name">{{.Name}}</div>
-      </a>
-      {{end}}
-    </div>
-  </section>
-</div>
 
 {{end}}

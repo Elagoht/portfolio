@@ -8,7 +8,7 @@
   "hero": {
     "badge": "Yeni fırsatlara açık",
     "subtitle": "Yazılım geliştirici ve açık kaynak meraklısı. Mimariden üretime uçtan uca sistemler inşa ediyorum — yüksek performanslı API'ler, modüler monolitler ve minimal altyapıda çok kiracılı platformlar.",
-    "readBlog": "Blogu Oku",
+    "readBlog": "Blogları Oku",
     "getInTouch": "İletişime Geç"
   },
   "sections": {
@@ -62,6 +62,17 @@
   },
   "about": {
     "text": "Mimariden üretime uçtan uca sistemlere sahip, ürün odaklı geliştirici. Go ve Node.js ile kimlik doğrulama, önbellekleme, doğrulama ve veritabanı entegrasyonu içeren yüksek performanslı RESTful API'ler ve backend servisleri tasarlar ve uygular. Linux üzerinde maliyet etkin modüler monolitler ve çok kiracılı platformlar inşa eder. 160+ yayınlanmış blog yazısı, 90+ YouTube videosu ve bir Udemy kursu ile aktif teknik içerik üreticisi. Dil eğitimi geçmişinden gelen güçlü iletişim, teknik ve teknik olmayan ekipler arasında köprü kurar."
+  },
+  "index": {
+    "aboutHeading": "Furkan Baytekin",
+    "aboutText": "Eğitim geçmişi olan bir Yazılım Geliştiricisiyim, bu yüzden size nasıl kod yazacağınızı öğretebilirim. Kendimi aynı zamanda bir açık kaynak büyücüsü olarak tanımlıyorum. Bas gitar çalıyorum ve kitap okumaya meraklıyım. Plak ve retro şeylere takıntılıyım (yazılımdan biraz uzaklaşmak için).",
+    "hobbies": "Hobiler",
+    "hobbyVinylTitle": "Plak Koleksiyonu",
+    "hobbyVinylDesc": "Plaklara takıntılıyım. Bir plak koleksiyonum var ve en eskisi 1969 orijinal baskı.",
+    "hobbyBassTitle": "Bas Gitar Çalmak",
+    "hobbyBassDesc": "2017'den beri bas gitar çalıyorum. Kendi başıma beste yapmayı ve müzik çalmayı seviyorum.",
+    "hobbyBooksTitle": "Kitap Okumak",
+    "hobbyBooksDesc": "Yazılımdan biraz uzaklaşmak için kitap okuyorum ama her seferinde kendimi yazılım hakkında okurken buluyorum."
   },
   "pages": {
     "home": {

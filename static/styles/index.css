@@ -4,6 +4,10 @@
   margin: 0 auto;
   padding: 8rem 2rem 4rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .hero-avatar {
@@ -63,7 +67,6 @@
   gap: 0.5rem;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 1.25rem;
 }
 
 .hero-title {
@@ -80,7 +83,6 @@
   font-size: 1.15rem;
   font-weight: 300;
   color: var(--fg-secondary);
-  max-width: 36.25rem;
   margin: 0 auto;
   line-height: 1.7;
 }
@@ -115,6 +117,51 @@
 
 .socials a:hover {
   color: var(--green);
+}
+
+/* ---- HOBBIES ---- */
+.hobbies {
+  padding: 3.5rem 0;
+}
+
+.hobby-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.hobby-card {
+  padding: 1.75rem 1.5rem;
+  border: 0.0625rem solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--bg-card);
+  transition: all 0.2s;
+}
+
+.hobby-card:hover {
+  border-color: var(--green-dim);
+  box-shadow: 0 0 1.5rem var(--green-glow);
+}
+
+.hobby-icon {
+  font-size: 1.5rem;
+  color: var(--green);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.hobby-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+
+.hobby-desc {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--fg-secondary);
+  line-height: 1.6;
 }
 
 /* ---- STATS ---- */
@@ -155,47 +202,6 @@
   font-weight: 400;
 }
 
-/* ---- BLOG CATEGORIES ---- */
-.categories {
-  padding: 3.5rem 0;
-}
-
-.cat-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
-}
-
-.cat-card {
-  text-align: center;
-  padding: 1.25rem 0.75rem;
-  border: 0.0625rem solid var(--border);
-  border-radius: 0.625rem;
-  background: var(--bg-card);
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s;
-}
-
-.cat-card:hover {
-  border-color: var(--green-dim);
-  box-shadow: 0 0 1.25rem var(--green-glow);
-}
-
-.cat-count {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--fg);
-  line-height: 1;
-}
-
-.cat-name {
-  font-size: 0.72rem;
-  color: var(--fg-muted);
-  margin-top: 0.3rem;
-  font-weight: 500;
-}
-
 /* ---- RESPONSIVE ---- */
 @media (max-width: 43.75rem) {
   .hero {
@@ -213,12 +219,12 @@
     letter-spacing: -0.0625rem;
   }
 
+  .hobby-grid {
+    grid-template-columns: 1fr;
+  }
+
   .stats {
     grid-template-columns: repeat(2, 1fr);
     padding: 2rem 1.25rem;
-  }
-
-  .cat-grid {
-    grid-template-columns: repeat(3, 1fr);
   }
 }

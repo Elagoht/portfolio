@@ -49,6 +49,12 @@ type Education struct {
 	Date       string
 }
 
+type Hobby struct {
+	Icon        string
+	Title       string
+	Description string
+}
+
 func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	lang := middleware.GetLanguage(r.Context())
 	canonical := router.GetCanonicalPath(r.Context())
@@ -75,12 +81,12 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		{Number: "12", Label: t("stats.languages")},
 		{Number: "1", Label: t("stats.udemyCourse")},
 	}
-	data["BlogCategories"] = []BlogCategory{
-		{Name: t("categories.software"), Count: 142, Href: "/blogs?category=software"},
-		{Name: t("categories.music"), Count: 8, Href: "/blogs?category=music"},
-		{Name: t("categories.techtales"), Count: 5, Href: "/blogs?category=techtales"},
-		{Name: t("categories.myLife"), Count: 3, Href: "/blogs?category=my-life"},
-		{Name: t("categories.uxui"), Count: 2, Href: "/blogs?category=ux-ui"},
+	data["AboutHeading"] = t("index.aboutHeading")
+	data["AboutText"] = t("index.aboutText")
+	data["Hobbies"] = []Hobby{
+		{Icon: "ti ti-player-record", Title: t("index.hobbyVinylTitle"), Description: t("index.hobbyVinylDesc")},
+		{Icon: "ti ti-guitar-pick", Title: t("index.hobbyBassTitle"), Description: t("index.hobbyBassDesc")},
+		{Icon: "ti ti-book", Title: t("index.hobbyBooksTitle"), Description: t("index.hobbyBooksDesc")},
 	}
 	h.renderer.Render(w, "index.html", data)
 }
