@@ -1,12 +1,15 @@
 {{define "footer"}}
 <footer>
-  {{if .Links}}
-  <div class="footer-links">
-    {{range .Links}}<a href="{{.Href}}" title="{{.Title}}">{{.Title}}</a>{{end}}
+  <div class="footer-inner">
+    {{if .Links}}
+    <div class="footer-links">
+      {{range .Links}}<a href="{{.Href}}" title="{{.Title}}">{{.Title}}</a>{{end}}
+    </div>
+    {{end}}
+    {{if .Name}}
+    <p>{{.Name}}{{if .Email}} · <a href="mailto:{{.Email}}">{{.Email}}</a>{{end}}</p>
+    {{end}}
+    <p>Copyleft © 2025 All Wrongs Reversed 🧙🏻‍♂️</p>
   </div>
-  {{end}}
-  {{if .Name}}
-  <p>{{.Name}}{{if .Email}} · <a href="mailto:{{.Email}}">{{.Email}}</a>{{end}}</p>
-  {{end}}
 </footer>
 {{end}}

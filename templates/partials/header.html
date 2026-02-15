@@ -1,35 +1,12 @@
 {{define "header"}}
-<header class="hero">
-  {{if .Name}}
-  <div class="hero-badge">
-    <span class="dot"></span>
-    {{t .Lang "hero.badge"}}
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="{{localePath "/" .Lang}}">{{if .Name}}{{.Name}}{{else}}Furkan Baytekin{{end}}</a>
+    <nav class="site-nav">
+      <a href="{{localePath "/" .Lang}}/blogs">{{t .Lang "nav.blogs"}}</a>
+      <a href="{{localePath "/" .Lang}}/projects">{{t .Lang "nav.projects"}}</a>
+      <a href="{{localePath "/" .Lang}}/book">{{t .Lang "nav.book"}}</a>
+    </nav>
   </div>
-  <h1 class="hero-name">{{.Name}}</h1>
-  <p class="hero-sub">{{t .Lang "hero.subtitle"}}</p>
-
-  <div class="hero-actions">
-    <a class="btn btn-primary" href="{{localePath "/" .Lang}}/blogs">
-      {{t .Lang "hero.readBlog"}}
-    </a>
-    {{if .Email}}
-    <a class="btn btn-ghost" href="mailto:{{.Email}}">
-      {{t .Lang "hero.getInTouch"}}
-    </a>
-    {{end}}
-  </div>
-
-  {{if .Links}}
-  <nav class="socials">
-    {{range .Links}}<a href="{{.Href}}">{{.Title}}</a>{{end}}
-  </nav>
-  {{end}}
-
-  <nav class="nav-bar">
-    <a href="{{localePath "/" .Lang}}/blogs">{{t .Lang "nav.blogs"}}</a>
-    <a href="{{localePath "/" .Lang}}/projects">{{t .Lang "nav.projects"}}</a>
-    <a href="{{localePath "/" .Lang}}/book">{{t .Lang "nav.book"}}</a>
-  </nav>
-  {{end}}
 </header>
 {{end}}

@@ -1,6 +1,29 @@
 {{template "base" .}}
 
 {{define "main"}}
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    {{t .Lang "hero.badge"}}
+  </div>
+  <h1 class="hero-name">{{.Name}}</h1>
+  <p class="hero-sub">{{t .Lang "hero.subtitle"}}</p>
+
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{localePath "/" .Lang}}/blogs">
+      {{t .Lang "hero.readBlog"}}
+    </a>
+    <a class="btn btn-ghost" href="mailto:{{.Email}}">
+      {{t .Lang "hero.getInTouch"}}
+    </a>
+  </div>
+
+  <nav class="socials">
+    {{range .Links}}<a href="{{.Href}}">{{.Title}}</a>{{end}}
+  </nav>
+</section>
+
 <div class="section-sep"></div>
 
 <!-- Stats -->

@@ -3,10 +3,14 @@
 {{define "main"}}
 <section class="error-page">
   <div class="error-container">
-    <h1 class="error-code">404</h1>
-    <h2 class="error-title">{{.Content.heading}}</h2>
+    <div class="error-code">404</div>
+    <div class="error-divider"></div>
+    <h1 class="error-title">{{.Content.heading}}</h1>
     <p class="error-message">{{.Content.message}}</p>
-    <a href="{{localePath "/" .Lang}}" class="btn btn-primary">{{.Content.action}}</a>
+    <div class="error-actions">
+      <a href="{{localePath "/" .Lang}}" class="btn btn-primary">{{.Content.action}}</a>
+      <a href="{{localePath "/" .Lang}}/blogs" class="btn btn-ghost">{{t .Lang "nav.blogs"}}</a>
+    </div>
   </div>
 </section>
 {{end}}

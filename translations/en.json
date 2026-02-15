@@ -2,6 +2,79 @@
   "meta": { "lang": "en" },
   "nav": {
     "blogs": "Blogs",
-    "projects": "Projects"
+    "projects": "Projects",
+    "book": "My Book"
+  },
+  "hero": {
+    "badge": "Available for new opportunities",
+    "subtitle": "Software developer & open sourcerer. I build end-to-end systems from architecture to production — high-performance APIs, modular monoliths, and multi-tenant platforms on minimal infrastructure.",
+    "readBlog": "Read the Blog",
+    "getInTouch": "Get in Touch"
+  },
+  "sections": {
+    "whatIDo": "What I Do",
+    "languages": "Languages",
+    "techStack": "Tech Stack",
+    "openSource": "Open Source",
+    "blogCategories": "Blog Categories",
+    "beyondCode": "Beyond Code"
+  },
+  "stats": {
+    "blogPosts": "Blog Posts",
+    "youtubeVideos": "YouTube Videos",
+    "languages": "Languages",
+    "udemyCourse": "Udemy Course"
+  },
+  "expertise": {
+    "backend": "Backend Architecture & API Design",
+    "frontend": "Frontend Development & SSR",
+    "devops": "DevOps & Infrastructure",
+    "database": "Database Design & Optimization",
+    "api": "REST, gRPC & WebSocket APIs",
+    "testing": "Testing & CI/CD Pipelines"
+  },
+  "stack": {
+    "backend": "Backend",
+    "frontend": "Frontend",
+    "devops": "DevOps",
+    "database": "Database",
+    "tools": "Tools",
+    "other": "Other"
+  },
+  "categories": {
+    "software": "Software",
+    "music": "Music",
+    "techtales": "TechTales",
+    "myLife": "My Life",
+    "uxui": "UX-UI"
+  },
+  "about": {
+    "bass": {
+      "title": "Bass Guitar",
+      "desc": "Playing since 2017. Composes and performs original music."
+    },
+    "vinyl": {
+      "title": "Vinyl Records",
+      "desc": "Collector with pressings dating back to 1969 originals."
+    },
+    "books": {
+      "title": "Books",
+      "desc": "Avid reader. Uses reading as an escape — though still gravitates toward tech literature."
+    },
+    "education": {
+      "title": "Education Background",
+      "desc": "Turkish Language Education (B.A.) at Gazi University. Strong communication bridges tech and non-tech."
+    }
+  },
+  "pages": {
+    "home": {
+      "title": "Furkan Baytekin"
+    },
+    "notfound": {
+      "title": "Page Not Found",
+      "heading": "Page not found",
+      "message": "The page you're looking for doesn't exist or has been moved.",
+      "action": "Back to Home"
+    }
   }
 }

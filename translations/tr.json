@@ -2,6 +2,79 @@
   "meta": { "lang": "tr" },
   "nav": {
     "blogs": "Bloglar",
-    "projects": "Projeler"
+    "projects": "Projeler",
+    "book": "Kitabım"
+  },
+  "hero": {
+    "badge": "Yeni fırsatlara açık",
+    "subtitle": "Yazılım geliştirici ve açık kaynak meraklısı. Mimariden üretime uçtan uca sistemler inşa ediyorum — yüksek performanslı API'ler, modüler monolitler ve minimal altyapıda çok kiracılı platformlar.",
+    "readBlog": "Blogu Oku",
+    "getInTouch": "İletişime Geç"
+  },
+  "sections": {
+    "whatIDo": "Ne Yapıyorum",
+    "languages": "Diller",
+    "techStack": "Teknoloji Yığını",
+    "openSource": "Açık Kaynak",
+    "blogCategories": "Blog Kategorileri",
+    "beyondCode": "Kodun Ötesinde"
+  },
+  "stats": {
+    "blogPosts": "Blog Yazısı",
+    "youtubeVideos": "YouTube Videosu",
+    "languages": "Dil",
+    "udemyCourse": "Udemy Kursu"
+  },
+  "expertise": {
+    "backend": "Backend Mimarisi & API Tasarımı",
+    "frontend": "Frontend Geliştirme & SSR",
+    "devops": "DevOps & Altyapı",
+    "database": "Veritabanı Tasarımı & Optimizasyon",
+    "api": "REST, gRPC & WebSocket API'ler",
+    "testing": "Test & CI/CD Pipeline'ları"
+  },
+  "stack": {
+    "backend": "Backend",
+    "frontend": "Frontend",
+    "devops": "DevOps",
+    "database": "Veritabanı",
+    "tools": "Araçlar",
+    "other": "Diğer"
+  },
+  "categories": {
+    "software": "Yazılım",
+    "music": "Müzik",
+    "techtales": "TechTales",
+    "myLife": "Hayatım",
+    "uxui": "UX-UI"
+  },
+  "about": {
+    "bass": {
+      "title": "Bas Gitar",
+      "desc": "2017'den beri çalıyor. Orijinal müzik besteliyor ve seslendiriyor."
+    },
+    "vinyl": {
+      "title": "Plak Koleksiyonu",
+      "desc": "1969 orijinallerine kadar uzanan baskılara sahip koleksiyoncu."
+    },
+    "books": {
+      "title": "Kitaplar",
+      "desc": "Tutkulu bir okuyucu. Okumayı bir kaçış olarak kullanıyor — yine de teknik literatüre yöneliyor."
+    },
+    "education": {
+      "title": "Eğitim Geçmişi",
+      "desc": "Gazi Üniversitesi Türkçe Eğitimi (Lisans). Güçlü iletişim, teknik ve teknik olmayan arasında köprü kurar."
+    }
+  },
+  "pages": {
+    "home": {
+      "title": "Furkan Baytekin"
+    },
+    "notfound": {
+      "title": "Sayfa Bulunamadı",
+      "heading": "Sayfa bulunamadı",
+      "message": "Aradığınız sayfa mevcut değil veya taşınmış olabilir.",
+      "action": "Ana Sayfaya Dön"
+    }
   }
 }
