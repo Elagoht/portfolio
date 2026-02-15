@@ -37,14 +37,20 @@
       href="/android-chrome-512x512.png"
     />
     <meta name="theme-color" content="#ffffff" />
-    {{/* Google Fonts */}}
+    {{/* Preconnect to external origins */}}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    {{/* Tabler Icons */}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
-    {{/* Main Stylesheet */}}
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    {{/* Main Stylesheet (critical, must block) */}}
     <link rel="stylesheet" href="/styles/main.css" />
+    {{/* Google Fonts — async load */}}
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" /></noscript>
+    {{/* Tabler Icons — async load */}}
+    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" /></noscript>
 
     {{/* Page-specific CSS */}} {{block "page-css" .}}{{end}} {{/* Page-specific
     head scripts */}} {{block "page-scripts" .}}{{end}} {{/* Additional head
