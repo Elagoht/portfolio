@@ -1,0 +1,15 @@
+{
+  "routes": [
+    {
+      "canonical": "/",
+      "paths": {
+        "en": "/en",
+        "tr": "/tr"
+      },
+      "strategy": "static",
+      "template": "index.html",
+      "handler": "index",
+      "title": "pages.home.title"
+    }
+  ]
+}

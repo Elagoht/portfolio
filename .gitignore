@@ -1,0 +1,19 @@
+# temporary builds
+tmp
+
+# production builds
+bin
+statigo
+
+# environment varibables
+.env
+
+# cache files
+cache
+!internal/cache
+
+# data files (ban lists, etc.)
+data
+
+# Backup files
+*.bak
