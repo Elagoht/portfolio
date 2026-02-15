@@ -84,22 +84,31 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Initialize cache manager
+	// Development mode check
+	devMode := os.Getenv("DEV_MODE") == "true"
+
+	// Initialize cache manager (skip in dev mode)
 	cacheDir := os.Getenv("CACHE_DIR")
 	if cacheDir == "" {
 		workDir, _ := os.Getwd()
 		cacheDir = filepath.Join(workDir, "data", "cache")
 	}
-	if err := os.MkdirAll(cacheDir, 0755); err != nil {
-		appLogger.Error("Failed to create cache directory", "error", err)
-		os.Exit(1)
+	var cacheManager *cache.Manager
+	if !devMode {
+		if err := os.MkdirAll(cacheDir, 0755); err != nil {
+			appLogger.Error("Failed to create cache directory", "error", err)
+			os.Exit(1)
+		}
+		var err error
+		cacheManager, err = cache.NewManager(cacheDir, appLogger)
+		if err != nil {
+			appLogger.Error("Failed to initialize cache manager", "error", err)
+			os.Exit(1)
+		}
+		appLogger.Info("Cache manager initialized", "dir", cacheDir)
+	} else {
+		appLogger.Info("Disk cache disabled in dev mode")
 	}
-	cacheManager, err := cache.NewManager(cacheDir, appLogger)
-	if err != nil {
-		appLogger.Error("Failed to initialize cache manager", "error", err)
-		os.Exit(1)
-	}
-	appLogger.Info("Cache manager initialized", "dir", cacheDir)
 
 	// Initialize example handlers
 	indexHandler := handlers.NewIndexHandler(renderer, routeRegistry)
@@ -145,9 +154,6 @@ func main() {
 	rateLimitRPS := utils.GetEnvInt("RATE_LIMIT_RPS", 10)
 	rateLimitBurst := utils.GetEnvInt("RATE_LIMIT_BURST", 20)
 
-	// Development mode check
-	devMode := os.Getenv("DEV_MODE") == "true"
-
 	// Honeypot paths for bot detection
 	honeypotPaths := []string{
 		"/admin", "/wp-admin", "/wp-login.php", "/.env", "/.git/config",
@@ -184,8 +190,10 @@ func main() {
 	// Canonical path middleware
 	r.Use(router.CanonicalPathMiddleware(routeRegistry))
 
-	// Cache middleware
-	r.Use(middleware.CacheMiddleware(cacheManager, appLogger))
+	// Cache middleware (skip disk cache in dev mode)
+	if !devMode {
+		r.Use(middleware.CacheMiddleware(cacheManager, appLogger))
+	}
 
 	// Register routes
 	routeRegistry.RegisterRoutes(r, func(h http.Handler) http.Handler { return h })
@@ -203,7 +211,9 @@ func main() {
 	r.Get("/health/readz", healthHandler.Readiness)
 
 	// Set router on cache manager for revalidation
-	cacheManager.SetRouter(r)
+	if cacheManager != nil {
+		cacheManager.SetRouter(r)
+	}
 
 	// Start server
 	port := os.Getenv("PORT")
