@@ -1,1 +1,122 @@
-{{template "base" .}} {{define "main"}} {{end}}
+{{template "base" .}}
+
+{{define "main"}}
+<div class="section-sep"></div>
+
+<!-- Stats -->
+<div class="stats">
+  {{range .Stats}}
+  <div class="stat">
+    <div class="stat-number">{{.Number}}</div>
+    <div class="stat-label">{{.Label}}</div>
+  </div>
+  {{end}}
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Expertise -->
+<div class="container">
+  <section class="expertise">
+    <p class="section-label">{{t .Lang "sections.whatIDo"}}</p>
+    <ul class="expertise-grid">
+      {{range .Expertise}}
+      <li class="expertise-item">{{.}}</li>
+      {{end}}
+    </ul>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Languages -->
+<div class="container">
+  <section class="languages">
+    <p class="section-label">{{t .Lang "sections.languages"}}</p>
+    <div class="lang-row">
+      {{range .Languages}}
+      <span class="lang-chip">{{.}}</span>
+      {{end}}
+    </div>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Tech Stack -->
+<div class="container">
+  <section class="stack">
+    <p class="section-label">{{t .Lang "sections.techStack"}}</p>
+    <div class="stack-grid">
+      {{range .TechStack}}
+      <div class="stack-group">
+        <h3>{{.Title}}</h3>
+        <div class="stack-chips">
+          {{range .Technologies}}
+          <span class="stack-chip">{{.}}</span>
+          {{end}}
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Projects -->
+<div class="container">
+  <section class="projects">
+    <p class="section-label">{{t .Lang "sections.openSource"}}</p>
+    <div class="project-grid">
+      {{range .Projects}}
+      <a class="project-card" href="{{.Repo}}" target="_blank" rel="noopener">
+        <div class="project-name">
+          <span>{{.Title}}</span>
+          <span class="arrow">&nearr;</span>
+        </div>
+        <div class="project-stack">
+          {{range .Stack}}
+          <span>{{.}}</span>
+          {{end}}
+        </div>
+      </a>
+      {{end}}
+    </div>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Blog Categories -->
+<div class="container">
+  <section class="categories">
+    <p class="section-label">{{t .Lang "sections.blogCategories"}}</p>
+    <div class="cat-grid">
+      {{range .BlogCategories}}
+      <a class="cat-card" href="{{.Href}}">
+        <div class="cat-count">{{.Count}}</div>
+        <div class="cat-name">{{.Name}}</div>
+      </a>
+      {{end}}
+    </div>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Beyond Code -->
+<div class="container">
+  <section class="about">
+    <p class="section-label">{{t .Lang "sections.beyondCode"}}</p>
+    <div class="about-grid">
+      {{range .About}}
+      <div class="about-card">
+        <h3>{{.Title}}</h3>
+        <p>{{.Description}}</p>
+      </div>
+      {{end}}
+    </div>
+  </section>
+</div>
+{{end}}

@@ -37,6 +37,10 @@
       href="/android-chrome-512x512.png"
     />
     <meta name="theme-color" content="#ffffff" />
+    {{/* Google Fonts */}}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     {{/* Main Stylesheet */}}
     <link rel="stylesheet" href="/styles/main.css" />
 
@@ -45,8 +49,11 @@
     content */}} {{block "extra-head" .}}{{end}}
   </head>
   <body>
-    {{template "header" .}}
-    <main>{{block "main" .}}{{end}}</main>
+    <div class="page">
+      {{template "header" .}}
+      <main>{{block "main" .}}{{end}}</main>
+      {{template "footer" .}}
+    </div>
 
     {{/* Main JavaScript */}}
     <script defer src="/scripts/main.js"></script>

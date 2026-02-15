@@ -19,7 +19,7 @@ import (
 	chiMiddleware "github.com/go-chi/chi/middleware"
 	"github.com/joho/godotenv"
 
-	"statigo/example/handlers"
+	"statigo/internal/handlers"
 	"statigo/framework/cache"
 	"statigo/framework/health"
 	"statigo/framework/i18n"
@@ -102,7 +102,7 @@ func main() {
 	appLogger.Info("Cache manager initialized", "dir", cacheDir)
 
 	// Initialize example handlers
-	indexHandler := handlers.NewIndexHandler(renderer, cacheManager, routeRegistry)
+	indexHandler := handlers.NewIndexHandler(renderer, routeRegistry)
 	notFoundHandler := handlers.NewNotFoundHandler(renderer)
 
 	// Create custom handlers map for route loader
