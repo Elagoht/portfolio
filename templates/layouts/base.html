@@ -49,11 +49,9 @@
     content */}} {{block "extra-head" .}}{{end}}
   </head>
   <body>
-    <div class="page">
-      {{template "header" .}}
-      <main>{{block "main" .}}{{end}}</main>
-      {{template "footer" .}}
-    </div>
+    {{template "header" .}}
+    <main>{{block "main" .}}{{end}}</main>
+    {{template "footer" .}}
 
     {{/* Main JavaScript */}}
     <script defer src="/scripts/main.js"></script>
