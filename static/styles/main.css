@@ -177,6 +177,17 @@ body::after {
   text-align: center;
 }
 
+.hero-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  border: 4px solid var(--bg-card);
+  box-shadow: 0 0 0 1px var(--border);
+  display: block;
+}
+
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -745,6 +756,25 @@ body::after {
   padding: 6rem 0 3.5rem;
 }
 
+.about-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+}
+
+.about-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+}
+
+.about-text-content {
+  flex: 1;
+}
+
 .about-page-heading {
   font-weight: 700;
   font-size: 2.5rem;
@@ -884,6 +914,12 @@ footer {
     padding: 6rem 1.25rem 3rem;
   }
 
+  .hero-avatar {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+  }
+
   .hero-name {
     font-size: 2.8rem;
     letter-spacing: -1px;
@@ -936,5 +972,14 @@ footer {
 
   .footer-group {
     min-width: 40%;
+  }
+
+  .about-content {
+    flex-direction: column;
+  }
+
+  .about-avatar {
+    width: 80px;
+    height: 80px;
   }
 }
