@@ -2,7 +2,7 @@
   "meta": { "lang": "tr" },
   "nav": {
     "blogs": "Bloglar",
-    "projects": "Projeler",
+    "about": "Hakkımda",
     "book": "Kitabım"
   },
   "hero": {
@@ -12,12 +12,13 @@
     "getInTouch": "İletişime Geç"
   },
   "sections": {
-    "whatIDo": "Ne Yapıyorum",
+    "whatIKnow": "Nelere Hakimim",
+    "experience": "Deneyim",
     "languages": "Diller",
     "techStack": "Teknoloji Yığını",
-    "openSource": "Açık Kaynak",
+    "education": "Eğitim",
     "blogCategories": "Blog Kategorileri",
-    "beyondCode": "Kodun Ötesinde"
+    "about": "Hakkımda"
   },
   "stats": {
     "blogPosts": "Blog Yazısı",
@@ -26,20 +27,24 @@
     "udemyCourse": "Udemy Kursu"
   },
   "expertise": {
-    "backend": "Backend Mimarisi & API Tasarımı",
-    "frontend": "Frontend Geliştirme & SSR",
-    "devops": "DevOps & Altyapı",
-    "database": "Veritabanı Tasarımı & Optimizasyon",
-    "api": "REST, gRPC & WebSocket API'ler",
-    "testing": "Test & CI/CD Pipeline'ları"
+    "systemDesign": "Sistem Tasarımı & Mimari",
+    "reactFrontend": "React / Next.js Frontend Mimarisi",
+    "modularMonolith": "Modüler Monolit & Çok Kiracılı Tasarım",
+    "restApi": "RESTful API Tasarımı, Versiyonlama & CRUD",
+    "authSecurity": "Kimlik Doğrulama & Yetkilendirme (JWT, RSA, JWKS, OAuth2, SSOT)",
+    "performance": "Performans Optimizasyonu & Önbellekleme (Bellek, Disk, HTTP, E-Tag)",
+    "dbMigration": "Veritabanı Migrasyonu & Şemalar",
+    "queues": "Kuyruk Sistemleri & Arka Plan İşleri",
+    "cicd": "CI/CD & Altyapı Otomasyonu",
+    "linux": "Linux Tabanlı Üretim Ortamları"
   },
   "stack": {
-    "backend": "Backend",
     "frontend": "Frontend",
-    "devops": "DevOps",
-    "database": "Veritabanı",
-    "tools": "Araçlar",
-    "other": "Diğer"
+    "backend": "Backend",
+    "infra": "Altyapı & DevOps",
+    "databases": "Veritabanları",
+    "testing": "Test & Otomasyon",
+    "apiConcepts": "API & Backend Kavramları"
   },
   "categories": {
     "software": "Yazılım",
@@ -49,26 +54,14 @@
     "uxui": "UX-UI"
   },
   "about": {
-    "bass": {
-      "title": "Bas Gitar",
-      "desc": "2017'den beri çalıyor. Orijinal müzik besteliyor ve seslendiriyor."
-    },
-    "vinyl": {
-      "title": "Plak Koleksiyonu",
-      "desc": "1969 orijinallerine kadar uzanan baskılara sahip koleksiyoncu."
-    },
-    "books": {
-      "title": "Kitaplar",
-      "desc": "Tutkulu bir okuyucu. Okumayı bir kaçış olarak kullanıyor — yine de teknik literatüre yöneliyor."
-    },
-    "education": {
-      "title": "Eğitim Geçmişi",
-      "desc": "Gazi Üniversitesi Türkçe Eğitimi (Lisans). Güçlü iletişim, teknik ve teknik olmayan arasında köprü kurar."
-    }
+    "text": "Mimariden üretime uçtan uca sistemlere sahip, ürün odaklı geliştirici. Go ve Node.js ile kimlik doğrulama, önbellekleme, doğrulama ve veritabanı entegrasyonu içeren yüksek performanslı RESTful API'ler ve backend servisleri tasarlar ve uygular. Linux üzerinde maliyet etkin modüler monolitler ve çok kiracılı platformlar inşa eder. 160+ yayınlanmış blog yazısı, 90+ YouTube videosu ve bir Udemy kursu ile aktif teknik içerik üreticisi. Dil eğitimi geçmişinden gelen güçlü iletişim, teknik ve teknik olmayan ekipler arasında köprü kurar."
   },
   "pages": {
     "home": {
       "title": "Furkan Baytekin"
+    },
+    "about": {
+      "title": "Hakkımda - Furkan Baytekin"
     },
     "notfound": {
       "title": "Sayfa Bulunamadı",

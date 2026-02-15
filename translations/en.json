@@ -2,7 +2,7 @@
   "meta": { "lang": "en" },
   "nav": {
     "blogs": "Blogs",
-    "projects": "Projects",
+    "about": "About",
     "book": "My Book"
   },
   "hero": {
@@ -12,12 +12,13 @@
     "getInTouch": "Get in Touch"
   },
   "sections": {
-    "whatIDo": "What I Do",
+    "whatIKnow": "What I Know",
+    "experience": "Experience",
     "languages": "Languages",
     "techStack": "Tech Stack",
-    "openSource": "Open Source",
+    "education": "Education",
     "blogCategories": "Blog Categories",
-    "beyondCode": "Beyond Code"
+    "about": "About"
   },
   "stats": {
     "blogPosts": "Blog Posts",
@@ -26,20 +27,24 @@
     "udemyCourse": "Udemy Course"
   },
   "expertise": {
-    "backend": "Backend Architecture & API Design",
-    "frontend": "Frontend Development & SSR",
-    "devops": "DevOps & Infrastructure",
-    "database": "Database Design & Optimization",
-    "api": "REST, gRPC & WebSocket APIs",
-    "testing": "Testing & CI/CD Pipelines"
+    "systemDesign": "System Design & Architecture",
+    "reactFrontend": "React / Next.js Frontend Architecture",
+    "modularMonolith": "Modular Monolith & Multi-tenant Design",
+    "restApi": "RESTful API Design, Versioning & CRUD",
+    "authSecurity": "Authentication & Authorization (JWT, RSA, JWKS, OAuth2, SSOT)",
+    "performance": "Performance Optimization & Caching (Memory, Disk, HTTP, E-Tag)",
+    "dbMigration": "Database Migration & Schemas",
+    "queues": "Queue Systems & Background Jobs",
+    "cicd": "CI/CD & Infrastructure Automation",
+    "linux": "Linux-based Production Environments"
   },
   "stack": {
-    "backend": "Backend",
     "frontend": "Frontend",
-    "devops": "DevOps",
-    "database": "Database",
-    "tools": "Tools",
-    "other": "Other"
+    "backend": "Backend",
+    "infra": "Infra & DevOps",
+    "databases": "Databases",
+    "testing": "Test & Automation",
+    "apiConcepts": "API & Backend Concepts"
   },
   "categories": {
     "software": "Software",
@@ -49,26 +54,14 @@
     "uxui": "UX-UI"
   },
   "about": {
-    "bass": {
-      "title": "Bass Guitar",
-      "desc": "Playing since 2017. Composes and performs original music."
-    },
-    "vinyl": {
-      "title": "Vinyl Records",
-      "desc": "Collector with pressings dating back to 1969 originals."
-    },
-    "books": {
-      "title": "Books",
-      "desc": "Avid reader. Uses reading as an escape — though still gravitates toward tech literature."
-    },
-    "education": {
-      "title": "Education Background",
-      "desc": "Turkish Language Education (B.A.) at Gazi University. Strong communication bridges tech and non-tech."
-    }
+    "text": "Product-oriented developer who owns end-to-end systems from architecture to production. Designs and implements high-performance RESTful APIs and backend services with authentication, caching, validation, and database integration in Go and Node.js. Builds cost-efficient modular monoliths and multi-tenant platforms on Linux. Active technical content creator with 160+ published blog posts, 90+ YouTube videos, and a Udemy course. Strong communication from language education background bridges tech and non-tech staff."
   },
   "pages": {
     "home": {
       "title": "Furkan Baytekin"
+    },
+    "about": {
+      "title": "About - Furkan Baytekin"
     },
     "notfound": {
       "title": "Page Not Found",

@@ -3,8 +3,8 @@
   <div class="site-header-inner">
     <a class="site-logo" href="{{localePath "/" .Lang}}">{{if .Name}}{{.Name}}{{else}}Furkan Baytekin{{end}}</a>
     <nav class="site-nav">
+      <a href="{{localePath "/" .Lang}}/about">{{t .Lang "nav.about"}}</a>
       <a href="{{localePath "/" .Lang}}/blogs">{{t .Lang "nav.blogs"}}</a>
-      <a href="{{localePath "/" .Lang}}/projects">{{t .Lang "nav.projects"}}</a>
       <a href="{{localePath "/" .Lang}}/book">{{t .Lang "nav.book"}}</a>
     </nav>
   </div>

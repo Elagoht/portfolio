@@ -1,0 +1,106 @@
+{{template "base" .}}
+
+{{define "main"}}
+<div class="container">
+  <section class="about-page">
+    <h1 class="about-page-heading">{{t .Lang "sections.about"}}</h1>
+    <p class="about-text">{{.AboutText}}</p>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Expertise -->
+<div class="container">
+  <section class="expertise">
+    <p class="section-label">{{t .Lang "sections.whatIKnow"}}</p>
+    <ul class="expertise-grid">
+      {{range .Expertise}}
+      <li class="expertise-item">{{.}}</li>
+      {{end}}
+    </ul>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Experience -->
+<div class="container">
+  <section class="experience">
+    <p class="section-label">{{t .Lang "sections.experience"}}</p>
+    <div class="experience-timeline">
+      {{range .Experience}}
+      <div class="experience-card">
+        <div class="experience-header">
+          <div class="experience-meta">
+            <h3 class="experience-title">{{.Title}}</h3>
+            <span class="experience-company">{{.Company}}</span>
+          </div>
+          <span class="experience-date">{{.Date}}</span>
+        </div>
+        <ul class="experience-list">
+          {{range .Description}}
+          <li>{{safeHTML .}}</li>
+          {{end}}
+        </ul>
+      </div>
+      {{end}}
+    </div>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Languages -->
+<div class="container">
+  <section class="languages">
+    <p class="section-label">{{t .Lang "sections.languages"}}</p>
+    <div class="lang-row">
+      {{range .Languages}}
+      <span class="lang-chip">{{.}}</span>
+      {{end}}
+    </div>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Tech Stack -->
+<div class="container">
+  <section class="stack">
+    <p class="section-label">{{t .Lang "sections.techStack"}}</p>
+    <div class="stack-grid">
+      {{range .TechStack}}
+      <div class="stack-group">
+        <h3>{{.Title}}</h3>
+        <div class="stack-chips">
+          {{range .Technologies}}
+          <span class="stack-chip">{{.}}</span>
+          {{end}}
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </section>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- Education -->
+<div class="container">
+  <section class="education">
+    <p class="section-label">{{t .Lang "sections.education"}}</p>
+    <div class="education-grid">
+      {{range .Education}}
+      <div class="education-card">
+        <div class="education-info">
+          <h3 class="education-university">{{.University}}</h3>
+          <p class="education-programme">{{.Programme}}</p>
+        </div>
+        <span class="education-date">{{.Date}}</span>
+      </div>
+      {{end}}
+    </div>
+  </section>
+</div>
+{{end}}

@@ -10,6 +10,17 @@
       "template": "index.html",
       "handler": "index",
       "title": "pages.home.title"
+    },
+    {
+      "canonical": "/about",
+      "paths": {
+        "en": "/en/about",
+        "tr": "/tr/about"
+      },
+      "strategy": "static",
+      "template": "about.html",
+      "handler": "about",
+      "title": "pages.about.title"
     }
   ]
 }

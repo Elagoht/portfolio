@@ -25,17 +25,6 @@ type TechGroup struct {
 	Technologies []string
 }
 
-type Project struct {
-	Title string
-	Repo  string
-	Stack []string
-}
-
-type AboutCard struct {
-	Title       string
-	Description string
-}
-
 type BlogCategory struct {
 	Name  string
 	Count int
@@ -45,6 +34,19 @@ type BlogCategory struct {
 type Stat struct {
 	Number string
 	Label  string
+}
+
+type ExperienceItem struct {
+	Title       string
+	Company     string
+	Date        string
+	Description []string
+}
+
+type Education struct {
+	University string
+	Programme  string
+	Date       string
 }
 
 func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -60,37 +62,12 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	data["Meta"] = map[string]string{
 		"description": t("hero.subtitle"),
 	}
+	data["Titles"] = []string{"Lead Product Developer", "Fullstack Developer"}
 	data["Stats"] = []Stat{
 		{Number: "160+", Label: t("stats.blogPosts")},
 		{Number: "90+", Label: t("stats.youtubeVideos")},
 		{Number: "12", Label: t("stats.languages")},
 		{Number: "1", Label: t("stats.udemyCourse")},
-	}
-	data["Expertise"] = []string{
-		t("expertise.backend"),
-		t("expertise.frontend"),
-		t("expertise.devops"),
-		t("expertise.database"),
-		t("expertise.api"),
-		t("expertise.testing"),
-	}
-	data["Languages"] = []string{
-		"Go", "TypeScript", "JavaScript", "C#", "Python",
-		"Bash", "SQL", "HTML", "CSS", "GDScript", "AWK",
-	}
-	data["TechStack"] = []TechGroup{
-		{Title: t("stack.backend"), Technologies: []string{"Go", "Chi", ".NET", "Node.js", "Express"}},
-		{Title: t("stack.frontend"), Technologies: []string{"React", "Next.js", "Astro", "TailwindCSS"}},
-		{Title: t("stack.devops"), Technologies: []string{"Docker", "Nginx", "Linux", "GitHub Actions", "CI/CD"}},
-		{Title: t("stack.database"), Technologies: []string{"PostgreSQL", "SQLite", "Redis", "MongoDB"}},
-		{Title: t("stack.tools"), Technologies: []string{"Git", "Neovim", "Tmux", "Make", "Air"}},
-		{Title: t("stack.other"), Technologies: []string{"REST", "WebSocket", "gRPC", "OAuth2", "JWT"}},
-	}
-	data["Projects"] = []Project{
-		{Title: "StatiGo", Repo: "https://github.com/Elagoht/StatiGo", Stack: []string{"Go", "Chi", "HTML Templates"}},
-		{Title: "Passenger", Repo: "https://github.com/Elagoht/Passenger", Stack: []string{"C#", ".NET", "CLI"}},
-		{Title: "SelfMark", Repo: "https://github.com/Elagoht/SelfMark", Stack: []string{"TypeScript", "React", "Vite"}},
-		{Title: "Inventa", Repo: "https://github.com/Elagoht/Inventa", Stack: []string{"Python", "Flask", "SQLite"}},
 	}
 	data["BlogCategories"] = []BlogCategory{
 		{Name: t("categories.software"), Count: 142, Href: "/blogs?category=software"},
@@ -99,12 +76,5 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		{Name: t("categories.myLife"), Count: 3, Href: "/blogs?category=my-life"},
 		{Name: t("categories.uxui"), Count: 2, Href: "/blogs?category=ux-ui"},
 	}
-	data["About"] = []AboutCard{
-		{Title: t("about.bass.title"), Description: t("about.bass.desc")},
-		{Title: t("about.vinyl.title"), Description: t("about.vinyl.desc")},
-		{Title: t("about.books.title"), Description: t("about.books.desc")},
-		{Title: t("about.education.title"), Description: t("about.education.desc")},
-	}
-
 	h.renderer.Render(w, "index.html", data)
 }
