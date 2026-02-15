@@ -776,7 +776,6 @@ footer {
 
 .footer-columns {
   display: flex;
-  justify-content: space-between;
   gap: 2rem;
 }
 
@@ -838,11 +837,10 @@ footer {
   line-height: 1;
   letter-spacing: -4px;
   color: var(--fg);
-  opacity: 0.08;
+  opacity: 0.45;
 }
 
 .error-divider {
-  width: 40.5rem;
   height: 2px;
   background: var(--green);
   margin: 1.5rem auto;
