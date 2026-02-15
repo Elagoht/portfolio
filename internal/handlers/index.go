@@ -63,6 +63,12 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		"description": t("hero.subtitle"),
 	}
 	data["Titles"] = []string{"Lead Product Developer", "Fullstack Developer"}
+	data["HeroLinks"] = []Link{
+		{Title: "GitHub", Href: "https://github.com/Elagoht"},
+		{Title: "LinkedIn", Href: "https://linkedin.com/in/furkan-baytekin"},
+		{Title: "YouTube", Href: "https://youtube.com/@furkanbytekin"},
+		{Title: "X", Href: "https://x.com/furkanbytekin"},
+	}
 	data["Stats"] = []Stat{
 		{Number: "160+", Label: t("stats.blogPosts")},
 		{Number: "90+", Label: t("stats.youtubeVideos")},
