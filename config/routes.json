@@ -12,6 +12,17 @@
       "title": "pages.home.title"
     },
     {
+      "canonical": "/blogs",
+      "paths": {
+        "en": "/en/blogs",
+        "tr": "/tr/blogs"
+      },
+      "strategy": "static",
+      "template": "blogs.html",
+      "handler": "blogs",
+      "title": "pages.blogs.title"
+    },
+    {
       "canonical": "/about",
       "paths": {
         "en": "/en/about",

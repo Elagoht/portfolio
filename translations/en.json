@@ -18,7 +18,14 @@
     "techStack": "Tech Stack",
     "education": "Education",
     "blogCategories": "Blog Categories",
+    "blogPosts": "Blog Posts",
+    "blogsDescription": "The blog posts I've written for you.",
     "about": "About"
+  },
+  "blogs": {
+    "searchPlaceholder": "Search posts...",
+    "previous": "Previous",
+    "next": "Next"
   },
   "stats": {
     "blogPosts": "Blog Posts",
@@ -59,6 +66,9 @@
   "pages": {
     "home": {
       "title": "Furkan Baytekin"
+    },
+    "blogs": {
+      "title": "Blog Posts - Written with love"
     },
     "about": {
       "title": "About - Furkan Baytekin"

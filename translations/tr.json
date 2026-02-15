@@ -18,7 +18,14 @@
     "techStack": "Teknoloji Yığını",
     "education": "Eğitim",
     "blogCategories": "Blog Kategorileri",
+    "blogPosts": "Blog Yazıları",
+    "blogsDescription": "Sizin için yazdığım blog yazıları.",
     "about": "Hakkımda"
+  },
+  "blogs": {
+    "searchPlaceholder": "Yazı ara...",
+    "previous": "Önceki",
+    "next": "Sonraki"
   },
   "stats": {
     "blogPosts": "Blog Yazısı",
@@ -59,6 +66,9 @@
   "pages": {
     "home": {
       "title": "Furkan Baytekin"
+    },
+    "blogs": {
+      "title": "Blog Yazıları - Sevgiyle yazılmış"
     },
     "about": {
       "title": "Hakkımda - Furkan Baytekin"

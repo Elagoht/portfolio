@@ -1,0 +1,74 @@
+{{template "base" .}}
+
+{{define "page-css"}}
+<link rel="stylesheet" href="/styles/blogs.css" />
+{{end}}
+
+{{define "main"}}
+<div class="container">
+  <section class="blogs-page">
+    <h1 class="blogs-heading">{{t .Lang "sections.blogPosts"}}</h1>
+    <p class="blogs-sub">{{t .Lang "sections.blogsDescription"}}</p>
+
+    <!-- Search & Filters -->
+    <div class="blog-toolbar">
+      <div class="blog-categories-wrapper">
+        <i class="ti ti-filter filters-icon"></i>
+        <div class="blog-categories">
+          {{range .BlogCategories}}
+          <a href="{{.Href}}" class="blog-category">{{.Name}} <span>{{.Count}}</span></a>
+          {{end}}
+        </div>
+      </div>
+      <div class="blog-search">
+        <i class="ti ti-search search-icon"></i>
+        <input type="text" placeholder="{{t .Lang "blogs.searchPlaceholder"}}" class="search-input" />
+      </div>
+    </div>
+
+    <!-- Blog Posts Grid -->
+    <div class="blog-grid">
+      {{range .Blogs}}
+      <article class="blog-card">
+        <a href="{{.Slug}}" class="blog-cover">
+          <img src="{{.Cover}}" alt="{{.Title}}" loading="lazy" />
+        </a>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span class="blog-category-tag">{{.Category}}</span>
+            <time class="blog-date">{{.Date}}</time>
+          </div>
+          <h2 class="blog-title">
+            <a href="{{.Slug}}">{{.Title}}</a>
+          </h2>
+          <p class="blog-excerpt">{{.Excerpt}}</p>
+        </div>
+      </article>
+      {{end}}
+    </div>
+
+    <!-- Pagination -->
+    <div class="blog-pagination">
+      <a href="{{.PrevPage}}" class="pagination-link pagination-prev {{if not .HasPrev}}disabled{{end}}">
+        <i class="ti ti-chevron-left"></i>
+        {{t .Lang "blogs.previous"}}
+      </a>
+      <div class="pagination-pages">
+        {{range .PageNumbers}}
+        {{if .IsCurrent}}
+        <span class="pagination-number current">{{.Number}}</span>
+        {{else if .IsEllipsis}}
+        <span class="pagination-ellipsis">...</span>
+        {{else}}
+        <a href="{{.Href}}" class="pagination-number">{{.Number}}</a>
+        {{end}}
+        {{end}}
+      </div>
+      <a href="{{.NextPage}}" class="pagination-link pagination-next {{if not .HasNext}}disabled{{end}}">
+        {{t .Lang "blogs.next"}}
+        <i class="ti ti-chevron-right"></i>
+      </a>
+    </div>
+  </section>
+</div>
+{{end}}
