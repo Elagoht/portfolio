@@ -25,12 +25,16 @@ func (h *NotFoundHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusNotFound)
 
-	data := BaseData(lang)
-	data["Title"] = h.renderer.GetTranslation(lang, "pages.notfound.title")
+	t := func(key string) string {
+		return h.renderer.GetTranslation(lang, key)
+	}
+
+	data := BaseData(lang, t)
+	data["Title"] = t("pages.notfound.title")
 	data["Content"] = map[string]string{
-		"heading": h.renderer.GetTranslation(lang, "pages.notfound.heading"),
-		"message": h.renderer.GetTranslation(lang, "pages.notfound.message"),
-		"action":  h.renderer.GetTranslation(lang, "pages.notfound.action"),
+		"heading": t("pages.notfound.heading"),
+		"message": t("pages.notfound.message"),
+		"action":  t("pages.notfound.action"),
 	}
 
 	h.renderer.Render(w, "notfound.html", data)

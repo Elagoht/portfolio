@@ -44,7 +44,7 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return h.renderer.GetTranslation(lang, key)
 	}
 
-	data := BaseData(lang)
+	data := BaseData(lang, t)
 	data["Canonical"] = canonical
 	data["Title"] = t("pages.blogs.title")
 	data["Meta"] = map[string]string{

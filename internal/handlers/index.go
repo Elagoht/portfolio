@@ -62,7 +62,7 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return h.renderer.GetTranslation(lang, key)
 	}
 
-	data := BaseData(lang)
+	data := BaseData(lang, t)
 	data["Canonical"] = canonical
 	data["Title"] = SiteName
 	data["Meta"] = map[string]string{

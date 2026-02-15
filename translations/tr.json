@@ -52,6 +52,12 @@
     "testing": "Test & Otomasyon",
     "apiConcepts": "API & Backend Kavramları"
   },
+  "footer": {
+    "directMessage": "Doğrudan Mesaj",
+    "socialMedia": "Sosyal Medya",
+    "productiveHours": "Üretken Saatlerim",
+    "sendEmail": "E-posta Gönder"
+  },
   "categories": {
     "software": "Yazılım",
     "music": "Müzik",

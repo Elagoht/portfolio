@@ -52,6 +52,12 @@
     "testing": "Test & Automation",
     "apiConcepts": "API & Backend Concepts"
   },
+  "footer": {
+    "directMessage": "Direct Message",
+    "socialMedia": "Social Media",
+    "productiveHours": "My Productive Hours",
+    "sendEmail": "Send Email"
+  },
   "categories": {
     "software": "Software",
     "music": "Music",

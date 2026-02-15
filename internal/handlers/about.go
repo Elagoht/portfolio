@@ -25,7 +25,7 @@ func (h *AboutHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return h.renderer.GetTranslation(lang, key)
 	}
 
-	data := BaseData(lang)
+	data := BaseData(lang, t)
 	data["Canonical"] = canonical
 	data["Title"] = t("pages.about.title")
 	data["Meta"] = map[string]string{
