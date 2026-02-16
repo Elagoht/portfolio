@@ -4,8 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"statigo/framework/middleware"
-	"statigo/framework/router"
+	fwctx "statigo/framework/context"
 	"statigo/framework/templates"
 )
 
@@ -27,19 +26,17 @@ type PageNumber struct {
 
 type BlogsHandler struct {
 	renderer *templates.Renderer
-	registry *router.Registry
 }
 
-func NewBlogsHandler(renderer *templates.Renderer, registry *router.Registry) *BlogsHandler {
+func NewBlogsHandler(renderer *templates.Renderer) *BlogsHandler {
 	return &BlogsHandler{
 		renderer: renderer,
-		registry: registry,
 	}
 }
 
 func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	lang := middleware.GetLanguage(r.Context())
-	canonical := router.GetCanonicalPath(r.Context())
+	const lang = "en"
+	canonical := fwctx.GetCanonicalPath(r.Context())
 	t := func(key string) string {
 		return h.renderer.GetTranslation(lang, key)
 	}
@@ -163,7 +160,7 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// TODO: Replace with real pagination logic from your data source
 	currentPage := 1
 	totalPages := 10 // Example: 142 posts / 12 per page ≈ 12 pages
-	pagePrefix := "/" + lang + "/blogs"
+	pagePrefix := "/blogs"
 
 	// Generate page numbers for pagination
 	var pageNumbers []PageNumber

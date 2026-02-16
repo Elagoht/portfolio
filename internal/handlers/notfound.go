@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 
-	"statigo/framework/middleware"
 	"statigo/framework/templates"
 )
 
@@ -18,10 +17,7 @@ func NewNotFoundHandler(renderer *templates.Renderer) *NotFoundHandler {
 }
 
 func (h *NotFoundHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	lang := middleware.GetLanguage(r.Context())
-	if lang == "" {
-		lang = "en"
-	}
+	const lang = "en"
 
 	w.WriteHeader(http.StatusNotFound)
 

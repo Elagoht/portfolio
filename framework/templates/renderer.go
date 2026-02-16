@@ -10,7 +10,7 @@ import (
 	"os"
 	"path"
 
-	"statigo/framework/i18n"
+	"statigo/framework/dictionary"
 	"statigo/framework/utils"
 )
 
@@ -18,7 +18,7 @@ import (
 type Renderer struct {
 	templates     *template.Template            // Base templates (layouts + partials)
 	pageTemplates map[string]*template.Template // Per-page template instances
-	i18n          *i18n.I18n
+	dict          *dictionary.Dictionary
 	minifier      *utils.Minifier
 	logger        *slog.Logger
 }
@@ -32,7 +32,7 @@ type SEOFunctions struct {
 }
 
 // NewRenderer creates a new template renderer.
-func NewRenderer(templatesFS fs.FS, i18nInstance *i18n.I18n, seoFuncs *SEOFunctions, logger *slog.Logger) (*Renderer, error) {
+func NewRenderer(templatesFS fs.FS, dict *dictionary.Dictionary, seoFuncs *SEOFunctions, logger *slog.Logger) (*Renderer, error) {
 	minifier := utils.NewMinifier()
 	funcMap := template.FuncMap{
 		"prettyJson":     PrettyJson,
@@ -55,7 +55,7 @@ func NewRenderer(templatesFS fs.FS, i18nInstance *i18n.I18n, seoFuncs *SEOFuncti
 		"dict":           Dict,
 		"set":            Set,
 		"hasDiscount":    HasDiscount,
-		"t":              i18nInstance.GetRaw,
+		"t":              dict.GetRaw,
 	}
 
 	// Add SEO functions if provided
@@ -122,7 +122,7 @@ func NewRenderer(templatesFS fs.FS, i18nInstance *i18n.I18n, seoFuncs *SEOFuncti
 	return &Renderer{
 		templates:     templates,
 		pageTemplates: pageTemplates,
-		i18n:          i18nInstance,
+		dict:          dict,
 		minifier:      minifier,
 		logger:        logger,
 	}, nil
@@ -130,7 +130,7 @@ func NewRenderer(templatesFS fs.FS, i18nInstance *i18n.I18n, seoFuncs *SEOFuncti
 
 // GetTranslation returns a translation for the given language and key.
 func (r *Renderer) GetTranslation(lang, key string) string {
-	if value := r.i18n.GetRaw(lang, key); value != nil {
+	if value := r.dict.GetRaw(lang, key); value != nil {
 		if str, ok := value.(string); ok {
 			return str
 		}

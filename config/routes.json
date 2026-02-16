@@ -2,10 +2,7 @@
   "routes": [
     {
       "canonical": "/",
-      "paths": {
-        "en": "/en",
-        "tr": "/tr"
-      },
+      "path": "/",
       "strategy": "static",
       "template": "index.html",
       "handler": "index",
@@ -13,10 +10,7 @@
     },
     {
       "canonical": "/blogs",
-      "paths": {
-        "en": "/en/blogs",
-        "tr": "/tr/blogs"
-      },
+      "path": "/blogs",
       "strategy": "static",
       "template": "blogs.html",
       "handler": "blogs",
@@ -24,10 +18,7 @@
     },
     {
       "canonical": "/about",
-      "paths": {
-        "en": "/en/about",
-        "tr": "/tr/about"
-      },
+      "path": "/about",
       "strategy": "static",
       "template": "about.html",
       "handler": "about",

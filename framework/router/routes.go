@@ -1,21 +1,20 @@
-// Package router provides multi-language URL routing with canonical path management.
+// Package router provides URL routing with canonical path management.
 package router
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi"
 )
 
-// RouteDefinition represents a canonical route with language-specific URLs.
+// RouteDefinition represents a route definition.
 type RouteDefinition struct {
-	Canonical string            // Canonical path, e.g., "/features"
-	Paths     map[string]string // Language -> URL path: {"en": "/en/features", "tr": "/tr/ozellikler"}
-	Handler   http.HandlerFunc  // Handler function for this route
-	Template  string            // Template name (e.g., "content.html")
-	Title     string            // Translation key for page title (e.g., "main.title")
-	Strategy  string            // Caching strategy: "static", "incremental", "dynamic", "immutable"
+	Canonical string           // Canonical path, e.g., "/features"
+	Path      string           // URL path: "/features"
+	Handler   http.HandlerFunc // Handler function for this route
+	Template  string           // Template name (e.g., "content.html")
+	Title     string           // Translation key for page title (e.g., "main.title")
+	Strategy  string           // Caching strategy: "static", "incremental", "dynamic", "immutable"
 }
 
 // Registry maintains the mapping between canonical paths and route definitions.
@@ -23,41 +22,29 @@ type Registry struct {
 	routes       []RouteDefinition
 	pathToRoute  map[string]*RouteDefinition // Maps actual paths to route definitions
 	canonicalMap map[string]*RouteDefinition // Maps canonical paths to route definitions
-	languages    []string                    // Supported languages
 }
 
-// NewRegistry creates a new route registry for the given languages.
-func NewRegistry(languages []string) *Registry {
+// NewRegistry creates a new route registry.
+func NewRegistry() *Registry {
 	return &Registry{
 		routes:       make([]RouteDefinition, 0),
 		pathToRoute:  make(map[string]*RouteDefinition),
 		canonicalMap: make(map[string]*RouteDefinition),
-		languages:    languages,
 	}
 }
 
 // AddRoute registers a new route definition.
-// Returns an error if any language is missing a path definition.
 func (r *Registry) AddRoute(def RouteDefinition) error {
-	// Validate that all languages have paths
-	for _, lang := range r.languages {
-		if _, exists := def.Paths[lang]; !exists {
-			return fmt.Errorf("missing path for language: %s in route %s", lang, def.Canonical)
-		}
-	}
-
 	// Store in registry
 	r.routes = append(r.routes, def)
 	routePtr := &r.routes[len(r.routes)-1]
 	r.canonicalMap[def.Canonical] = routePtr
 
-	// Map all language-specific paths to this definition
-	for _, path := range def.Paths {
-		r.pathToRoute[path] = routePtr
-		// Also map the path with trailing slash (unless it's the root path)
-		if path != "/" {
-			r.pathToRoute[path+"/"] = routePtr
-		}
+	// Map path to this definition
+	r.pathToRoute[def.Path] = routePtr
+	// Also map the path with trailing slash (unless it's the root path)
+	if def.Path != "/" {
+		r.pathToRoute[def.Path+"/"] = routePtr
 	}
 
 	return nil
@@ -73,22 +60,9 @@ func (r *Registry) GetByCanonical(canonical string) *RouteDefinition {
 	return r.canonicalMap[canonical]
 }
 
-// GetAlternateURLs returns all language variants for a canonical path.
-func (r *Registry) GetAlternateURLs(canonical string) map[string]string {
-	if route := r.canonicalMap[canonical]; route != nil {
-		return route.Paths
-	}
-	return nil
-}
-
 // GetAll returns all registered routes.
 func (r *Registry) GetAll() []RouteDefinition {
 	return r.routes
-}
-
-// Languages returns the supported languages.
-func (r *Registry) Languages() []string {
-	return r.languages
 }
 
 // RegisterRoutes automatically registers all routes from the registry with a chi router.
@@ -103,14 +77,12 @@ func (r *Registry) RegisterRoutes(router chi.Router, canonicalMiddleware func(ht
 			wrappedHandler.ServeHTTP(w, req)
 		}
 
-		// Register each language-specific path with the same wrapped handler
-		for _, path := range route.Paths {
-			router.Get(path, handlerFunc)
+		// Register the path
+		router.Get(route.Path, handlerFunc)
 
-			// Also register with trailing slash
-			if path != "/" {
-				router.Get(path+"/", handlerFunc)
-			}
+		// Also register with trailing slash
+		if route.Path != "/" {
+			router.Get(route.Path+"/", handlerFunc)
 		}
 	}
 }

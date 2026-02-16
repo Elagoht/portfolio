@@ -8,18 +8,18 @@ import (
 	"net/http"
 	"os"
 
-	"statigo/framework/middleware"
+	fwctx "statigo/framework/context"
 	"statigo/framework/templates"
 )
 
 // RouteConfig represents a single route configuration from JSON.
 type RouteConfig struct {
-	Canonical string            `json:"canonical"`
-	Paths     map[string]string `json:"paths"`
-	Template  string            `json:"template"`
-	Handler   string            `json:"handler"`  // Handler name (e.g., "index", "content")
-	Title     string            `json:"title"`    // Translation key for page title
-	Strategy  string            `json:"strategy"` // Caching strategy: "static", "incremental", "dynamic", "immutable"
+	Canonical string `json:"canonical"`
+	Path      string `json:"path"`
+	Template  string `json:"template"`
+	Handler   string `json:"handler"`  // Handler name (e.g., "index", "content")
+	Title     string `json:"title"`    // Translation key for page title
+	Strategy  string `json:"strategy"` // Caching strategy: "static", "incremental", "dynamic", "immutable"
 }
 
 // RoutesConfig represents the complete routes configuration file.
@@ -61,12 +61,11 @@ func LoadRoutesFromJSON(
 			templateName := routeConfig.Template
 			handler = func(w http.ResponseWriter, r *http.Request) {
 				ctx := r.Context()
-				lang := middleware.GetLanguage(ctx)
-				layoutData := middleware.GetLayoutData(ctx)
-				canonical := GetCanonicalPath(ctx)
+				layoutData := fwctx.GetLayoutData(ctx)
+				canonical := fwctx.GetCanonicalPath(ctx)
 
 				renderer.Render(w, templateName, map[string]interface{}{
-					"Lang":      lang,
+					"Lang":      "en",
 					"Data":      map[string]interface{}{},
 					"Layout":    layoutData,
 					"Canonical": canonical,
@@ -86,12 +85,11 @@ func LoadRoutesFromJSON(
 					templateName := routeConfig.Template
 					handler = func(w http.ResponseWriter, r *http.Request) {
 						ctx := r.Context()
-						lang := middleware.GetLanguage(ctx)
-						layoutData := middleware.GetLayoutData(ctx)
-						canonical := GetCanonicalPath(ctx)
+						layoutData := fwctx.GetLayoutData(ctx)
+						canonical := fwctx.GetCanonicalPath(ctx)
 
 						renderer.Render(w, templateName, map[string]interface{}{
-							"Lang":      lang,
+							"Lang":      "en",
 							"Data":      map[string]interface{}{},
 							"Layout":    layoutData,
 							"Canonical": canonical,
@@ -104,12 +102,11 @@ func LoadRoutesFromJSON(
 				templateName := routeConfig.Template
 				handler = func(w http.ResponseWriter, r *http.Request) {
 					ctx := r.Context()
-					lang := middleware.GetLanguage(ctx)
-					layoutData := middleware.GetLayoutData(ctx)
-					canonical := GetCanonicalPath(ctx)
+					layoutData := fwctx.GetLayoutData(ctx)
+					canonical := fwctx.GetCanonicalPath(ctx)
 
 					renderer.Render(w, templateName, map[string]interface{}{
-						"Lang":      lang,
+						"Lang":      "en",
 						"Data":      map[string]interface{}{},
 						"Layout":    layoutData,
 						"Canonical": canonical,
@@ -122,7 +119,7 @@ func LoadRoutesFromJSON(
 		// Add route to registry
 		if err := registry.AddRoute(RouteDefinition{
 			Canonical: routeConfig.Canonical,
-			Paths:     routeConfig.Paths,
+			Path:      routeConfig.Path,
 			Handler:   handler,
 			Template:  routeConfig.Template,
 			Title:     routeConfig.Title,

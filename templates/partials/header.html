@@ -1,10 +1,10 @@
 {{define "header"}}
 <header class="site-header">
   <div class="site-header-inner">
-    <a class="site-logo" href="{{localePath "/" .Lang}}">{{if .Name}}{{.Name}}{{else}}Furkan Baytekin{{end}}</a>
+    <a class="site-logo" href="/">{{if .Name}}{{.Name}}{{else}}Furkan Baytekin{{end}}</a>
     <nav class="site-nav">
-      <a href="{{localePath "/" .Lang}}/about"><i class="ti ti-user"></i> {{t .Lang "nav.about"}}</a>
-      <a href="{{localePath "/" .Lang}}/blogs"><i class="ti ti-article"></i> {{t .Lang "nav.blogs"}}</a>
+      <a href="/about"><i class="ti ti-user"></i> {{t "en" "nav.about"}}</a>
+      <a href="/blogs"><i class="ti ti-article"></i> {{t "en" "nav.blogs"}}</a>
     </nav>
   </div>
 </header>

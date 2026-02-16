@@ -3,8 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"statigo/framework/middleware"
-	"statigo/framework/router"
+	fwctx "statigo/framework/context"
 	"statigo/framework/templates"
 )
 
@@ -19,8 +18,8 @@ func NewAboutHandler(renderer *templates.Renderer) *AboutHandler {
 }
 
 func (h *AboutHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	lang := middleware.GetLanguage(r.Context())
-	canonical := router.GetCanonicalPath(r.Context())
+	const lang = "en"
+	canonical := fwctx.GetCanonicalPath(r.Context())
 	t := func(key string) string {
 		return h.renderer.GetTranslation(lang, key)
 	}

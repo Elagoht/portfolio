@@ -22,7 +22,7 @@ import (
 	"statigo/internal/handlers"
 	"statigo/framework/cache"
 	"statigo/framework/health"
-	"statigo/framework/i18n"
+	"statigo/framework/dictionary"
 	fwlogger "statigo/framework/logger"
 	"statigo/framework/middleware"
 	"statigo/framework/router"
@@ -50,16 +50,15 @@ func main() {
 	configFS := GetConfigFS()
 	staticFS := GetStaticFS()
 
-	// Initialize i18n with English as default
-	i18nInstance, err := i18n.New(translationsFS, "en")
+	// Initialize dictionary
+	dict, err := dictionary.New(translationsFS, "en")
 	if err != nil {
-		appLogger.Error("Failed to initialize i18n", "error", err)
+		appLogger.Error("Failed to initialize dictionary", "error", err)
 		os.Exit(1)
 	}
 
 	// Initialize routing system
-	languages := []string{"en", "tr"}
-	routeRegistry := router.NewRegistry(languages)
+	routeRegistry := router.NewRegistry()
 
 	// Initialize SEO helpers
 	baseURL := os.Getenv("BASE_URL")
@@ -78,7 +77,7 @@ func main() {
 	}
 
 	// Initialize template renderer
-	renderer, err := templates.NewRenderer(templatesFS, i18nInstance, seoFuncs, appLogger)
+	renderer, err := templates.NewRenderer(templatesFS, dict, seoFuncs, appLogger)
 	if err != nil {
 		appLogger.Error("Failed to initialize template renderer", "error", err)
 		os.Exit(1)
@@ -111,9 +110,9 @@ func main() {
 	}
 
 	// Initialize example handlers
-	indexHandler := handlers.NewIndexHandler(renderer, routeRegistry)
+	indexHandler := handlers.NewIndexHandler(renderer)
 	aboutHandler := handlers.NewAboutHandler(renderer)
-	blogsHandler := handlers.NewBlogsHandler(renderer, routeRegistry)
+	blogsHandler := handlers.NewBlogsHandler(renderer)
 	notFoundHandler := handlers.NewNotFoundHandler(renderer)
 
 	// Create custom handlers map for route loader
@@ -184,12 +183,10 @@ func main() {
 
 	// Language middleware
 	langConfig := middleware.LanguageConfig{
-		SupportedLanguages: languages,
-		DefaultLanguage:    "en",
-		SkipPaths:          []string{"/robots.txt", "/sitemap.xml", "/favicon.ico"},
-		SkipPrefixes:       []string{"/health/", "/static/", "/styles/", "/scripts/"},
+		SkipPaths:    []string{"/robots.txt", "/sitemap.xml", "/favicon.ico"},
+		SkipPrefixes: []string{"/health/", "/static/", "/styles/", "/scripts/"},
 	}
-	r.Use(middleware.Language(i18nInstance, langConfig))
+	r.Use(middleware.Language(dict, langConfig))
 
 	// Canonical path middleware
 	r.Use(router.CanonicalPathMiddleware(routeRegistry))
@@ -201,11 +198,6 @@ func main() {
 
 	// Register routes
 	routeRegistry.RegisterRoutes(r, func(h http.Handler) http.Handler { return h })
-
-	// Root redirect
-	r.Get("/", func(w http.ResponseWriter, req *http.Request) {
-		http.Redirect(w, req, "/en", http.StatusFound)
-	})
 
 	// 404 handler
 	r.NotFound(notFoundHandler.ServeHTTP)
