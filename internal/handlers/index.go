@@ -85,6 +85,7 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		{Icon: "ti ti-player-record", Title: t("index.hobbyVinylTitle"), Description: t("index.hobbyVinylDesc")},
 		{Icon: "ti ti-guitar-pick", Title: t("index.hobbyBassTitle"), Description: t("index.hobbyBassDesc")},
 		{Icon: "ti ti-book", Title: t("index.hobbyBooksTitle"), Description: t("index.hobbyBooksDesc")},
+		{Icon: "ti ti-device-gamepad-2", Title: t("index.hobbyGameJamsTitle"), Description: t("index.hobbyGameJamsDesc")},
 	}
 	h.renderer.Render(w, "index.html", data)
 }

@@ -77,7 +77,9 @@
     "hobbyBassTitle": "Playing Bass Guitar",
     "hobbyBassDesc": "I've been playing the bass guitar since 2017. I like to compose and play music on my own.",
     "hobbyBooksTitle": "Reading Books",
-    "hobbyBooksDesc": "I read books to get away from the software for a bit, but I always end up reading about software."
+    "hobbyBooksDesc": "I read books to get away from the software for a bit, but I always end up reading about software.",
+    "hobbyGameJamsTitle": "Game Jams",
+    "hobbyGameJamsDesc": "Game jams are my way of unwinding. I compose and record soundtracks with bass and electric guitars and a MIDI keyboard — and occasionally go full solo as both dev and musician."
   },
   "pages": {
     "home": {
