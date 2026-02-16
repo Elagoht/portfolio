@@ -2,7 +2,7 @@
 .hero {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 8rem 2rem 4rem;
+  padding: 4rem 2rem;
   text-align: center;
   display: flex;
   flex-direction: column;
