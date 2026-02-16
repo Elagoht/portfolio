@@ -135,6 +135,7 @@ func main() {
 	aboutHandler := handlers.NewAboutHandler(renderer)
 	blogsHandler := handlers.NewBlogsHandler(renderer, bloggoService, bloggoAPIURL)
 	blogPostHandler := handlers.NewBlogPostHandler(renderer, bloggoService, bloggoAPIURL)
+	feedHandler := handlers.NewFeedHandler(bloggoService, bloggoAPIURL, baseURL)
 	notFoundHandler := handlers.NewNotFoundHandler(renderer)
 
 	// Create custom handlers map for route loader
@@ -220,6 +221,10 @@ func main() {
 
 	// Register routes
 	routeRegistry.RegisterRoutes(r, func(h http.Handler) http.Handler { return h })
+
+	// Feed routes
+	r.Get("/rss", feedHandler.RSS)
+	r.Get("/feed.json", feedHandler.JSON)
 
 	// Blog post wildcard route (must be registered after main routes)
 	r.Get("/blogs/*", blogPostHandler.ServeHTTP)
