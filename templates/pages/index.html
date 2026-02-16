@@ -55,10 +55,17 @@
 <!-- Stats -->
 <div class="stats">
   {{range .Stats}}
+  {{if .Href}}
+  <a href="{{.Href}}" class="stat" {{if ne (slice .Href 0 1) "/"}}target="_blank" rel="noopener noreferrer"{{end}}>
+    <div class="stat-number">{{.Number}}</div>
+    <div class="stat-label">{{.Label}}</div>
+  </a>
+  {{else}}
   <div class="stat">
     <div class="stat-number">{{.Number}}</div>
     <div class="stat-label">{{.Label}}</div>
   </div>
+  {{end}}
   {{end}}
 </div>
 

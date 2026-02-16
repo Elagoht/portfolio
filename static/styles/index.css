@@ -183,6 +183,11 @@
   transition: all 0.2s;
 }
 
+a.stat {
+  text-decoration: none;
+  color: inherit;
+}
+
 .stat:hover {
   border-color: var(--green-dim);
   box-shadow: 0 0 1.5rem var(--green-glow);
