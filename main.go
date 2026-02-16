@@ -113,6 +113,7 @@ func main() {
 	indexHandler := handlers.NewIndexHandler(renderer)
 	aboutHandler := handlers.NewAboutHandler(renderer)
 	blogsHandler := handlers.NewBlogsHandler(renderer)
+	blogPostHandler := handlers.NewBlogPostHandler(renderer)
 	notFoundHandler := handlers.NewNotFoundHandler(renderer)
 
 	// Create custom handlers map for route loader
@@ -198,6 +199,9 @@ func main() {
 
 	// Register routes
 	routeRegistry.RegisterRoutes(r, func(h http.Handler) http.Handler { return h })
+
+	// Blog post wildcard route (must be registered after main routes)
+	r.Get("/blogs/*", blogPostHandler.ServeHTTP)
 
 	// 404 handler
 	r.NotFound(notFoundHandler.ServeHTTP)

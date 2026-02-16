@@ -1,0 +1,139 @@
+{{template "base" .}}
+
+{{define "page-css"}}
+<link rel="stylesheet" href="/styles/blog-post.css" />
+{{end}}
+
+{{define "title"}}
+{{.BlogPost.Title}} | Furkan Baytekin
+{{end}}
+
+{{define "main"}}
+<div class="container">
+  <article class="blog-post">
+    <!-- Cover Image -->
+    <figure class="blog-post-cover">
+      <img src="{{.BlogPost.Cover}}" alt="{{.BlogPost.Title}}" />
+    </figure>
+
+    <!-- Post Header -->
+    <header class="blog-post-header">
+      <div class="blog-post-meta">
+        <span class="blog-post-category">{{.BlogPost.Category}}</span>
+        <span class="blog-post-date">
+          <i class="ti ti-calendar"></i>
+          {{.BlogPost.Date}}
+        </span>
+        <span class="blog-post-read-time">
+          <i class="ti ti-clock"></i>
+          {{.BlogPost.ReadTime}} min read
+        </span>
+      </div>
+      <h1 class="blog-post-title">{{.BlogPost.Title}}</h1>
+      <p class="blog-post-excerpt">{{.BlogPost.Excerpt}}</p>
+    </header>
+
+    <!-- Post Content -->
+    <div class="blog-post-content">
+      {{.BlogPost.Content}}
+    </div>
+
+    <!-- Post Footer -->
+    <footer class="blog-post-footer">
+      <!-- Tags -->
+      {{if .BlogPost.Tags}}
+      <div class="blog-post-tags">
+        <span class="tags-label">Tags</span>
+        <div class="tags-list">
+          {{range .BlogPost.Tags}}
+          <a href="/blogs?tag={{.}}" class="tag">#{{.}}</a>
+          {{end}}
+        </div>
+      </div>
+      {{end}}
+
+      <!-- Share -->
+      <div class="blog-post-share">
+        <span class="share-label">Share</span>
+        <div class="share-links">
+          <a href="https://twitter.com/intent/tweet?text={{.BlogPost.Title}}&url={{.Canonical}}" target="_blank" rel="noopener" class="share-link">
+            <i class="ti ti-brand-x"></i>
+          </a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url={{.Canonical}}" target="_blank" rel="noopener" class="share-link">
+            <i class="ti ti-brand-linkedin"></i>
+          </a>
+          <a href="mailto:?subject={{.BlogPost.Title}}&body=Check out this article: {{.Canonical}}" class="share-link">
+            <i class="ti ti-mail"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </article>
+
+  <!-- Author Card -->
+  <aside class="author-card">
+    <div class="author-avatar">
+      <img src="/images/avatar.jpg" alt="Furkan Baytekin" />
+    </div>
+    <div class="author-info">
+      <h3 class="author-name">Furkan Baytekin</h3>
+      <p class="author-bio">Software developer, musician, and writer. Building things for the web and sharing what I learn along the way.</p>
+      <div class="author-links">
+        <a href="https://twitter.com/abonesepeti" target="_blank" rel="noopener" class="author-link">
+          <i class="ti ti-brand-x"></i>
+        </a>
+        <a href="https://github.com/furkanbaytekin" target="_blank" rel="noopener" class="author-link">
+          <i class="ti ti-brand-github"></i>
+        </a>
+        <a href="https://linkedin.com/in/furkanbaytekin" target="_blank" rel="noopener" class="author-link">
+          <i class="ti ti-brand-linkedin"></i>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Navigation -->
+  <nav class="blog-post-nav">
+    {{if .PrevPost}}
+    <a href="{{.PrevPost.Slug}}" class="post-nav-link post-nav-prev">
+      <span class="post-nav-label">Previous</span>
+      <span class="post-nav-title">{{.PrevPost.Title}}</span>
+    </a>
+    {{else}}
+    <div class="post-nav-link post-nav-prev placeholder"></div>
+    {{end}}
+
+    <a href="/blogs" class="post-nav-link post-nav-all">
+      <i class="ti ti-grid-dots"></i>
+    </a>
+
+    {{if .NextPost}}
+    <a href="{{.NextPost.Slug}}" class="post-nav-link post-nav-next">
+      <span class="post-nav-label">Next</span>
+      <span class="post-nav-title">{{.NextPost.Title}}</span>
+    </a>
+    {{else}}
+    <div class="post-nav-link post-nav-next placeholder"></div>
+    {{end}}
+  </nav>
+
+  <!-- Related Posts -->
+  {{if .RelatedPosts}}
+  <section class="related-posts">
+    <h2 class="related-posts-title">Related Posts</h2>
+    <div class="related-posts-grid">
+      {{range .RelatedPosts}}
+      <a href="{{.Slug}}" class="related-post-card">
+        <img src="{{.Cover}}" alt="{{.Title}}" class="related-post-cover" />
+        <div class="related-post-content">
+          <span class="related-post-category">{{.Category}}</span>
+          <h3 class="related-post-title">{{.Title}}</h3>
+          <span class="related-post-date">{{.Date}}</span>
+        </div>
+      </a>
+      {{end}}
+    </div>
+  </section>
+  {{end}}
+</div>
+{{end}}
