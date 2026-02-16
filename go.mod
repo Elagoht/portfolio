@@ -15,5 +15,6 @@ require (
 
 require (
 	github.com/tdewolff/parse/v2 v2.8.5 // indirect
+	github.com/yuin/goldmark v1.7.16 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 )

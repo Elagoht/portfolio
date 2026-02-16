@@ -19,16 +19,18 @@ import (
 	chiMiddleware "github.com/go-chi/chi/middleware"
 	"github.com/joho/godotenv"
 
-	"statigo/internal/handlers"
 	"statigo/framework/cache"
-	"statigo/framework/health"
+	"statigo/framework/client"
 	"statigo/framework/dictionary"
+	"statigo/framework/health"
 	fwlogger "statigo/framework/logger"
 	"statigo/framework/middleware"
 	"statigo/framework/router"
 	"statigo/framework/security"
 	"statigo/framework/templates"
 	"statigo/framework/utils"
+	"statigo/internal/handlers"
+	"statigo/internal/services"
 )
 
 func main() {
@@ -109,11 +111,30 @@ func main() {
 		appLogger.Info("Disk cache disabled in dev mode")
 	}
 
-	// Initialize example handlers
+	// Initialize Bloggo API client
+	bloggoAPIURL := utils.GetEnvString("BLOGGO_API_URL", "http://debian:8723")
+	bloggoAPIKey := utils.GetEnvString("BLOGGO_API_KEY", "")
+	bloggoClient := client.New(client.Config{
+		BaseURL:         bloggoAPIURL,
+		Timeout:         time.Duration(utils.GetEnvInt("HTTP_TIMEOUT", 30)) * time.Second,
+		ConnectTimeout:  time.Duration(utils.GetEnvInt("HTTP_CONNECT_TIMEOUT", 10)) * time.Second,
+		TLSTimeout:      time.Duration(utils.GetEnvInt("HTTP_TLS_TIMEOUT", 10)) * time.Second,
+		IdleConnTimeout: time.Duration(utils.GetEnvInt("HTTP_IDLE_TIMEOUT", 90)) * time.Second,
+		MaxRetries:      utils.GetEnvInt("HTTP_MAX_RETRIES", 3),
+		RetryWaitMin:    time.Duration(utils.GetEnvInt("HTTP_RETRY_BASE_DELAY", 500)) * time.Millisecond,
+		RetryWaitMax:    30 * time.Second,
+		UserAgent:       "Statigo/1.0",
+		Headers: map[string]string{
+			"x-trusted-frontend": bloggoAPIKey,
+		},
+	}, appLogger)
+	bloggoService := services.NewBloggoService(bloggoClient, appLogger)
+
+	// Initialize handlers
 	indexHandler := handlers.NewIndexHandler(renderer)
 	aboutHandler := handlers.NewAboutHandler(renderer)
-	blogsHandler := handlers.NewBlogsHandler(renderer)
-	blogPostHandler := handlers.NewBlogPostHandler(renderer)
+	blogsHandler := handlers.NewBlogsHandler(renderer, bloggoService, bloggoAPIURL)
+	blogPostHandler := handlers.NewBlogPostHandler(renderer, bloggoService, bloggoAPIURL)
 	notFoundHandler := handlers.NewNotFoundHandler(renderer)
 
 	// Create custom handlers map for route loader
