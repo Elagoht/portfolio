@@ -7,6 +7,7 @@ import (
 
 	fwctx "statigo/framework/context"
 	"statigo/framework/templates"
+	"statigo/framework/utils"
 	"statigo/internal/services"
 )
 
@@ -27,16 +28,18 @@ type PageNumber struct {
 }
 
 type BlogsHandler struct {
-	renderer *templates.Renderer
-	bloggo   *services.BloggoService
-	apiBase  string
+	renderer     *templates.Renderer
+	bloggo       *services.BloggoService
+	apiBase      string
+	postsPerPage int
 }
 
 func NewBlogsHandler(renderer *templates.Renderer, bloggo *services.BloggoService, apiBase string) *BlogsHandler {
 	return &BlogsHandler{
-		renderer: renderer,
-		bloggo:   bloggo,
-		apiBase:  apiBase,
+		renderer:     renderer,
+		bloggo:       bloggo,
+		apiBase:      apiBase,
+		postsPerPage: utils.GetEnvInt("BLOGS_PAGE_SIZE", 12),
 	}
 }
 
@@ -81,10 +84,9 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch posts
-	const postsPerPage = 12
 	postsResp, err := h.bloggo.ListPosts(r.Context(), services.ListPostsParams{
 		Page:     currentPage,
-		Limit:    postsPerPage,
+		Limit:    h.postsPerPage,
 		Category: category,
 		Tag:      tag,
 		Search:   search,
@@ -119,7 +121,7 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	data["Blogs"] = blogs
 
 	// Pagination
-	totalPages := int(math.Ceil(float64(postsResp.Total) / float64(postsPerPage)))
+	totalPages := int(math.Ceil(float64(postsResp.Total) / float64(h.postsPerPage)))
 	if totalPages < 1 {
 		totalPages = 1
 	}
