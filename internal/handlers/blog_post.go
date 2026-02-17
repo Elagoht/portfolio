@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting"
 
 	fwctx "statigo/framework/context"
 	"statigo/framework/templates"
@@ -143,9 +144,26 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func markdownToHTML(md string) template.HTML {
+	// Create goldmark instance with syntax highlighting
+	mdParser := goldmark.New(
+		goldmark.WithExtensions(
+			highlighting.NewHighlighting(
+				highlighting.WithStyle("dracula"),
+				highlighting.WithCSSWriter(htmlEscapeWriter{}),
+			),
+		),
+	)
+
 	var buf bytes.Buffer
-	if err := goldmark.Convert([]byte(md), &buf); err != nil {
+	if err := mdParser.Convert([]byte(md), &buf); err != nil {
 		return template.HTML(md)
 	}
 	return template.HTML(buf.String())
+}
+
+// htmlEscapeWriter wraps a bytes.Buffer to escape HTML output for CSS
+type htmlEscapeWriter struct{}
+
+func (w htmlEscapeWriter) Write(p []byte) (int, error) {
+	return 0, nil // We don't need CSS output since we'll use our own stylesheet
 }

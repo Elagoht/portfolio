@@ -167,21 +167,12 @@
 }
 
 .blog-post-content pre {
-  background: #1a1a1a;
-  border: 0.0625rem solid var(--border);
   border-radius: 0.625rem;
   padding: 1.5rem;
   overflow-x: auto;
   margin: 2.5rem 0;
   font-size: 0.875rem;
   line-height: 1.7;
-}
-
-@media (prefers-color-scheme: dark) {
-  .blog-post-content pre {
-    background: #0d0d0d;
-    border-color: #333;
-  }
 }
 
 .blog-post-content pre code {
@@ -289,9 +280,8 @@
 
 .related-post-card:hover {
   border-color: var(--green-dim);
-  background: var(--chip-bg);
-  transform: translateY(-0.1875rem);
-  box-shadow: 0 0.25rem 1rem var(--green-glow);
+  box-shadow: 0 0.25rem 1.5rem var(--green-glow);
+  transform: translateY(-0.125rem);
 }
 
 .related-post-cover {

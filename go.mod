@@ -14,7 +14,10 @@ require (
 )
 
 require (
+	github.com/alecthomas/chroma v0.10.0 // indirect
+	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/tdewolff/parse/v2 v2.8.5 // indirect
 	github.com/yuin/goldmark v1.7.16 // indirect
+	github.com/yuin/goldmark-highlighting v0.0.0-20220208100518-594be1970594 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 )
