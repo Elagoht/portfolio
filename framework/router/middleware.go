@@ -3,6 +3,7 @@ package router
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	fwctx "statigo/framework/context"
 )
@@ -23,6 +24,14 @@ func CanonicalPathMiddleware(registry *Registry) func(http.Handler) http.Handler
 				if route.Strategy != "" {
 					ctx = fwctx.SetStrategy(ctx, route.Strategy)
 				}
+				next.ServeHTTP(w, r.WithContext(ctx))
+				return
+			}
+
+			// No exact match — check for blog post wildcard paths
+			if strings.HasPrefix(path, "/blogs/") && len(path) > len("/blogs/") {
+				ctx := fwctx.SetCanonicalPath(r.Context(), path)
+				ctx = fwctx.SetStrategy(ctx, "static")
 				next.ServeHTTP(w, r.WithContext(ctx))
 				return
 			}

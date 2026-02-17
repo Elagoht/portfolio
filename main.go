@@ -132,6 +132,10 @@ func main() {
 	viewTracker := services.NewViewTracker(appLogger)
 	viewsHandler := handlers.NewViewsHandler(bloggoService, 10*time.Minute)
 
+	// Initialize webhook handler
+	webhookSecret := utils.GetEnvString("WEBHOOK_SECRET", "")
+	webhookHandler := handlers.NewWebhookHandler(cacheManager, viewsHandler, appLogger)
+
 	// Initialize handlers
 	indexHandler := handlers.NewIndexHandler(renderer)
 	aboutHandler := handlers.NewAboutHandler(renderer)
@@ -238,6 +242,12 @@ func main() {
 	// Health endpoints
 	r.Get("/health/livez", healthHandler.Liveness)
 	r.Get("/health/readz", healthHandler.Readiness)
+
+	// Webhook endpoint (authenticated via X-Webhook-Secret header)
+	r.Route("/api/webhook", func(wr chi.Router) {
+		wr.Use(middleware.WebhookAuth(webhookSecret, appLogger))
+		wr.Post("/", webhookHandler.Handle)
+	})
 
 	// Set router on cache manager for revalidation
 	if cacheManager != nil {

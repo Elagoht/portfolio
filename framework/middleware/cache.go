@@ -44,6 +44,7 @@ func CacheMiddleware(cacheManager *cache.Manager, logger *slog.Logger) func(http
 				if etagMatch(r.Header.Get("If-None-Match"), etag) {
 					w.Header().Set("ETag", etag)
 					w.Header().Set("Cache-Control", "no-cache")
+					w.Header().Set("X-Cache", "HIT")
 					w.WriteHeader(http.StatusNotModified)
 					return
 				}
