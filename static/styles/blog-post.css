@@ -262,6 +262,41 @@
   background: var(--chip-bg);
 }
 
+/* ---- VIEW COUNT SLOT ANIMATION ---- */
+.views-count {
+  display: inline-flex;
+  gap: 0;
+}
+
+.slot-reel {
+  display: inline-block;
+  height: 1.2em;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.slot-strip {
+  display: flex;
+  flex-direction: column;
+}
+
+.slot-strip span {
+  display: block;
+  height: 1.2em;
+  line-height: 1.2em;
+  text-align: center;
+}
+
+.slot-reel.spin .slot-strip {
+  animation: slot-roll 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --target: calc(-1.2em * var(--steps));
+}
+
+@keyframes slot-roll {
+  from { transform: translateY(0); }
+  to { transform: translateY(var(--target)); }
+}
+
 /* ---- TABLE OF CONTENTS ---- */
 .toc {
   position: fixed;

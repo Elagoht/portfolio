@@ -31,7 +31,7 @@
           </span>
           <span class="blog-post-views">
             <i class="ti ti-eye"></i>
-            {{.BlogPost.ViewCount}} views
+            <span class="views-count" data-views="{{.BlogPost.ViewCount}}">{{.BlogPost.ViewCount}}</span> views
           </span>
         </div>
         <h1 class="blog-post-title">{{.BlogPost.Title}}</h1>
@@ -80,6 +80,42 @@
 {{end}}
 
 {{define "footer-scripts"}}
+<script>
+(function() {
+  var el = document.querySelector('.views-count');
+  if (!el) return;
+
+  var slug = window.location.pathname.replace(/^\/blogs\//, '').replace(/\/$/, '');
+  if (!slug) return;
+
+  fetch('/api/posts/views/' + slug)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var count = data.views || 0;
+      if (count > 0) animateCount(el, count);
+    })
+    .catch(function() {});
+
+  function animateCount(target, to) {
+    var toStr = String(to);
+    var len = toStr.length;
+    var html = '';
+
+    for (var i = 0; i < len; i++) {
+      var toDigit = parseInt(toStr[i], 10);
+      var digits = '';
+      for (var d = 0; d <= toDigit; d++) {
+        digits += '<span>' + d + '</span>';
+      }
+
+      html += '<span class="slot-reel spin" style="--steps:' + toDigit + '">' +
+        '<span class="slot-strip">' + digits + '</span></span>';
+    }
+
+    target.innerHTML = html;
+  }
+})();
+</script>
 {{if .BlogPost.TOCItems}}
 <script>
 (function() {

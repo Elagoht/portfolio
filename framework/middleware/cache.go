@@ -22,9 +22,8 @@ func CacheMiddleware(cacheManager *cache.Manager, logger *slog.Logger) func(http
 				return
 			}
 
-			// Get canonical path and language from context
+			// Get canonical path from context
 			canonical := fwctx.GetCanonicalPath(r.Context())
-			lang := fwctx.GetLanguage(r.Context())
 
 			// Skip if no canonical path
 			if canonical == "" {
@@ -33,7 +32,7 @@ func CacheMiddleware(cacheManager *cache.Manager, logger *slog.Logger) func(http
 			}
 
 			// Generate cache key
-			cacheKey := cache.GetCacheKey(canonical, lang, nil)
+			cacheKey := cache.GetCacheKey(canonical)
 
 			// Try to get from cache
 			entry, found := cacheManager.Get(cacheKey)

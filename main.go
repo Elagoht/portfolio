@@ -243,6 +243,9 @@ func main() {
 	r.Get("/health/livez", healthHandler.Liveness)
 	r.Get("/health/readz", healthHandler.Readiness)
 
+	// Views endpoint (public, not cached)
+	r.Get("/api/posts/views/*", viewsHandler.GetSlug)
+
 	// Webhook endpoint (authenticated via X-Webhook-Secret header)
 	r.Route("/api/webhook", func(wr chi.Router) {
 		wr.Use(middleware.WebhookAuth(webhookSecret, appLogger))
