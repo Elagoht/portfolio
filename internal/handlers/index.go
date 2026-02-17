@@ -23,9 +23,17 @@ type TechGroup struct {
 }
 
 type BlogCategory struct {
-	Name  string
-	Count int
-	Href  string
+	Name   string
+	Count  int
+	Href   string
+	Active bool
+}
+
+type BlogTag struct {
+	Name   string
+	Count  int
+	Href   string
+	Active bool
 }
 
 type Stat struct {

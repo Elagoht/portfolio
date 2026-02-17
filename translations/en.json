@@ -23,6 +23,11 @@
   },
   "blogs": {
     "searchPlaceholder": "Search posts...",
+    "filter": "Filter",
+    "apply": "Apply",
+    "categories": "Category",
+    "tags": "Tags",
+    "clearFilters": "Clear all",
     "previous": "Previous",
     "next": "Next"
   },

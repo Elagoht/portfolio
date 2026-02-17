@@ -69,18 +69,71 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	tag := query.Get("tag")
 	search := query.Get("search")
 
-	// Fetch categories
+	// Pass current filter values to template
+	data["CurrentSearch"] = search
+	data["CurrentCategory"] = category
+	data["CurrentTag"] = tag
+	data["HasActiveFilters"] = category != "" || tag != "" || search != ""
+
+	// Helper to build filter URLs preserving other params
+	buildFilterURL := func(cat, tg, srch string) string {
+		url := "/blogs"
+		sep := "?"
+		if cat != "" {
+			url += sep + "category=" + cat
+			sep = "&"
+		}
+		if tg != "" {
+			url += sep + "tag=" + tg
+			sep = "&"
+		}
+		if srch != "" {
+			url += sep + "search=" + srch
+		}
+		return url
+	}
+
+	// Clear-all URL (remove all filters)
+	data["ClearFiltersHref"] = "/blogs"
+
+	// Fetch categories — clicking active deselects
 	categories, err := h.bloggo.ListCategories(r.Context())
 	if err == nil {
 		var blogCategories []BlogCategory
 		for _, cat := range categories {
+			active := category == cat.Slug
+			href := buildFilterURL(cat.Slug, tag, search)
+			if active {
+				href = buildFilterURL("", tag, search)
+			}
 			blogCategories = append(blogCategories, BlogCategory{
-				Name:  cat.Name,
-				Count: cat.PostCount,
-				Href:  "/blogs?category=" + cat.Slug,
+				Name:   cat.Name,
+				Count:  cat.PostCount,
+				Href:   href,
+				Active: active,
 			})
 		}
 		data["BlogCategories"] = blogCategories
+	}
+
+	// Fetch tags — clicking active deselects
+	tags, err := h.bloggo.ListTags(r.Context())
+	if err == nil {
+		var blogTags []BlogTag
+		for _, tg := range tags {
+			active := tag == tg.Slug
+			href := buildFilterURL(category, tg.Slug, search)
+			if active {
+				href = buildFilterURL(category, "", search)
+			}
+			blogTags = append(blogTags, BlogTag{
+				Name:   tg.Name,
+				Count:  tg.PostCount,
+				Href:   href,
+				Active: active,
+			})
+		}
+		data["BlogTags"] = blogTags
 	}
 
 	// Fetch posts

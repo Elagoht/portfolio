@@ -10,34 +10,49 @@
 
 {{define "main"}}
 <div class="container">
-  <article class="blog-post">
-    <!-- Cover Image -->
-    <figure class="blog-post-cover">
-      <img src="{{.BlogPost.Cover}}" alt="{{.BlogPost.Title}}" />
-    </figure>
+  <div class="blog-post-layout">
+    <article class="blog-post">
+      <!-- Cover Image -->
+      <figure class="blog-post-cover">
+        <img src="{{.BlogPost.Cover}}" alt="{{.BlogPost.Title}}" />
+      </figure>
 
-    <!-- Post Header -->
-    <header class="blog-post-header">
-      <div class="blog-post-meta">
-        <span class="blog-post-category">{{.BlogPost.Category}}</span>
-        <span class="blog-post-date">
-          <i class="ti ti-calendar"></i>
-          {{.BlogPost.Date}}
-        </span>
-        <span class="blog-post-read-time">
-          <i class="ti ti-clock"></i>
-          {{.BlogPost.ReadTime}} min read
-        </span>
+      <!-- Post Header -->
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <span class="blog-post-category">{{.BlogPost.Category}}</span>
+          <span class="blog-post-date">
+            <i class="ti ti-calendar"></i>
+            {{.BlogPost.Date}}
+          </span>
+          <span class="blog-post-read-time">
+            <i class="ti ti-clock"></i>
+            {{.BlogPost.ReadTime}} min read
+          </span>
+        </div>
+        <h1 class="blog-post-title">{{.BlogPost.Title}}</h1>
+        <p class="blog-post-excerpt">{{.BlogPost.Excerpt}}</p>
+      </header>
+
+      <!-- Post Content -->
+      <div class="blog-post-content">
+        {{.BlogPost.Content}}
       </div>
-      <h1 class="blog-post-title">{{.BlogPost.Title}}</h1>
-      <p class="blog-post-excerpt">{{.BlogPost.Excerpt}}</p>
-    </header>
+    </article>
 
-    <!-- Post Content -->
-    <div class="blog-post-content">
-      {{.BlogPost.Content}}
-    </div>
-  </article>
+    {{if .BlogPost.TOCItems}}
+    <nav class="toc">
+      <h2 class="toc-title">Table of Contents</h2>
+      <ul class="toc-list">
+        {{range .BlogPost.TOCItems}}
+        <li class="toc-item toc-item--level-{{.Level}}">
+          <a href="#{{.ID}}" class="toc-link">{{.Text}}</a>
+        </li>
+        {{end}}
+      </ul>
+    </nav>
+    {{end}}
+  </div>
 
   <!-- Related Posts -->
   {{if .RelatedPosts}}
@@ -58,4 +73,45 @@
   </section>
   {{end}}
 </div>
+{{end}}
+
+{{define "footer-scripts"}}
+{{if .BlogPost.TOCItems}}
+<script>
+(function() {
+  var links = document.querySelectorAll('.toc-link');
+  if (!links.length) return;
+
+  var headingIds = [];
+  links.forEach(function(link) {
+    headingIds.push(link.getAttribute('href').slice(1));
+  });
+
+  var linkMap = {};
+  links.forEach(function(link) {
+    linkMap[link.getAttribute('href').slice(1)] = link;
+  });
+
+  var currentActive = null;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        if (currentActive) currentActive.classList.remove('active');
+        var link = linkMap[entry.target.id];
+        if (link) {
+          link.classList.add('active');
+          currentActive = link;
+        }
+      }
+    });
+  }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+
+  headingIds.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+})();
+</script>
+{{end}}
 {{end}}

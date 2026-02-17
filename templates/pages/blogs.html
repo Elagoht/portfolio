@@ -11,18 +11,72 @@
     <p class="blogs-sub">{{t .Lang "sections.blogsDescription"}}</p>
 
     <!-- Search & Filters -->
-    <div class="blog-toolbar">
-      <div class="blog-categories-wrapper">
-        <i class="ti ti-filter filters-icon"></i>
-        <div class="blog-categories">
-          {{range .BlogCategories}}
-          <a href="{{.Href}}" class="blog-category">{{.Name}} <span>{{.Count}}</span></a>
+    <div class="blog-filters">
+      <div class="blog-filters-row">
+        <!-- Filter Modal Button -->
+        <button type="button" class="filter-modal-btn" data-filter-modal-open>
+          <i class="ti ti-filter"></i>
+          {{t .Lang "blogs.filter"}}
+          {{if or .CurrentCategory .CurrentTag}}<span class="filter-active-dot"></span>{{end}}
+        </button>
+
+        <!-- Search -->
+        <form action="/blogs" method="GET" class="blog-search">
+          {{if .CurrentCategory}}<input type="hidden" name="category" value="{{.CurrentCategory}}" />{{end}}
+          {{if .CurrentTag}}<input type="hidden" name="tag" value="{{.CurrentTag}}" />{{end}}
+          <i class="ti ti-search search-icon"></i>
+          <input type="text" name="search" placeholder="{{t .Lang "blogs.searchPlaceholder"}}" class="search-input" value="{{.CurrentSearch}}" />
+        </form>
+      </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="filter-modal" data-filter-modal>
+      <div class="filter-modal-backdrop" data-filter-modal-backdrop></div>
+      <div class="filter-modal-content">
+        <div class="filter-modal-header">
+          <h2 class="filter-modal-title">{{t .Lang "blogs.filter"}}</h2>
+          <button type="button" class="filter-modal-close" data-filter-modal-close>
+            <i class="ti ti-x"></i>
+          </button>
+        </div>
+
+        <div class="filter-modal-body">
+          <!-- Categories Section -->
+          <div class="filter-section">
+            <h3 class="filter-section-title">{{t .Lang "blogs.categories"}}</h3>
+            <div class="filter-pills" data-filter-type="category">
+              {{range .BlogCategories}}
+              <button type="button" class="filter-pill{{if .Active}} active{{end}}" data-filter-value="{{.Name}}">
+                {{.Name}} <span>{{.Count}}</span>
+              </button>
+              {{end}}
+            </div>
+          </div>
+
+          {{if .BlogTags}}
+          <!-- Tags Section -->
+          <div class="filter-section">
+            <h3 class="filter-section-title">{{t .Lang "blogs.tags"}}</h3>
+            <div class="filter-pills" data-filter-type="tag">
+              {{range .BlogTags}}
+              <button type="button" class="filter-pill filter-pill--tag{{if .Active}} active{{end}}" data-filter-value="{{.Name}}">
+                {{.Name}} <span>{{.Count}}</span>
+              </button>
+              {{end}}
+            </div>
+          </div>
           {{end}}
         </div>
-      </div>
-      <div class="blog-search">
-        <i class="ti ti-search search-icon"></i>
-        <input type="text" placeholder="{{t .Lang "blogs.searchPlaceholder"}}" class="search-input" />
+
+        <div class="filter-modal-footer">
+          <a href="{{.ClearFiltersHref}}" class="clear-filters clear-filters--modal">
+            <i class="ti ti-x"></i> {{t .Lang "blogs.clearFilters"}}
+          </a>
+          <button type="button" class="filter-apply-btn" data-filter-apply>
+            {{t .Lang "blogs.apply"}}
+          </button>
+        </div>
       </div>
     </div>
 
@@ -71,4 +125,88 @@
     </div>
   </section>
 </div>
+{{end}}
+
+{{define "footer-scripts"}}
+<script>
+(function() {
+  var modal = document.querySelector('[data-filter-modal]');
+  var openBtn = document.querySelector('[data-filter-modal-open]');
+  var closeBtn = document.querySelector('[data-filter-modal-close]');
+  var backdrop = document.querySelector('[data-filter-modal-backdrop]');
+  var applyBtn = document.querySelector('[data-filter-apply]');
+  var pills = document.querySelectorAll('[data-filter-value]');
+
+  var currentCategory = {{if .CurrentCategory}}"{{.CurrentCategory}}"{{else}}null{{end}};
+  var currentTag = {{if .CurrentTag}}"{{.CurrentTag}}"{{else}}null{{end}};
+  var currentSearch = {{if .CurrentSearch}}"{{.CurrentSearch}}"{{else}}""{{end}};
+
+  var selectedCategory = currentCategory;
+  var selectedTag = currentTag;
+
+  function openModal() {
+    if (modal) modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (modal) modal.classList.remove('open');
+    document.body.style.overflow = '';
+    resetSelections();
+  }
+
+  function resetSelections() {
+    selectedCategory = currentCategory;
+    selectedTag = currentTag;
+    updatePills();
+  }
+
+  function updatePills() {
+    pills.forEach(function(pill) {
+      var value = pill.getAttribute('data-filter-value');
+      var type = pill.parentElement.getAttribute('data-filter-type');
+      var isActive = false;
+
+      if (type === 'category' && value === selectedCategory) isActive = true;
+      if (type === 'tag' && value === selectedTag) isActive = true;
+
+      pill.classList.toggle('active', isActive);
+    });
+  }
+
+  function applyFilters() {
+    var params = new URLSearchParams();
+    if (currentSearch) params.set('search', currentSearch);
+    if (selectedCategory) params.set('category', selectedCategory);
+    if (selectedTag) params.set('tag', selectedTag);
+
+    var queryString = params.toString();
+    window.location.href = '/blogs' + (queryString ? '?' + queryString : '');
+  }
+
+  if (openBtn) openBtn.addEventListener('click', openModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (backdrop) backdrop.addEventListener('click', closeModal);
+  if (applyBtn) applyBtn.addEventListener('click', applyFilters);
+
+  pills.forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      var value = this.getAttribute('data-filter-value');
+      var type = this.parentElement.getAttribute('data-filter-type');
+
+      if (type === 'category') {
+        selectedCategory = (selectedCategory === value) ? null : value;
+      } else if (type === 'tag') {
+        selectedTag = (selectedTag === value) ? null : value;
+      }
+
+      updatePills();
+    });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+})();
+</script>
 {{end}}

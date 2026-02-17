@@ -10,11 +10,19 @@ import (
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
+	"golang.org/x/net/html"
 
 	fwctx "statigo/framework/context"
 	"statigo/framework/templates"
 	"statigo/internal/services"
 )
+
+type TOCItem struct {
+	Text  string
+	ID    string
+	Level int
+}
 
 type BlogPostData struct {
 	Slug      string
@@ -27,6 +35,7 @@ type BlogPostData struct {
 	Content   template.HTML
 	Tags      []string
 	Canonical string
+	TOCItems  []TOCItem
 }
 
 type BlogPostHandler struct {
@@ -91,6 +100,9 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		tags = append(tags, tag.Name)
 	}
 
+	content := markdownToHTML(post.Content)
+	tocItems := extractTOCItems(string(content))
+
 	blogPost := BlogPostData{
 		Slug:      slug,
 		Cover:     cover,
@@ -99,9 +111,10 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Date:      post.PublishedAt.Format("January 2, 2006"),
 		ReadTime:  strconv.Itoa(post.ReadTime),
 		Excerpt:   excerpt,
-		Content:   markdownToHTML(post.Content),
+		Content:   content,
 		Tags:      tags,
 		Canonical: fwctx.GetCanonicalPath(r.Context()),
+		TOCItems:  tocItems,
 	}
 
 	data := BaseData(lang, t)
@@ -145,7 +158,6 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func markdownToHTML(md string) template.HTML {
-	// Create goldmark instance with syntax highlighting and table support
 	mdParser := goldmark.New(
 		goldmark.WithExtensions(
 			extension.Table,
@@ -156,6 +168,9 @@ func markdownToHTML(md string) template.HTML {
 				highlighting.WithCSSWriter(htmlEscapeWriter{}),
 			),
 		),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
 	)
 
 	var buf bytes.Buffer
@@ -163,6 +178,76 @@ func markdownToHTML(md string) template.HTML {
 		return template.HTML(md)
 	}
 	return template.HTML(buf.String())
+}
+
+func extractTOCItems(htmlContent string) []TOCItem {
+	var items []TOCItem
+	tokenizer := html.NewTokenizer(strings.NewReader(htmlContent))
+
+	for {
+		tt := tokenizer.Next()
+		if tt == html.ErrorToken {
+			break
+		}
+		if tt != html.StartTagToken {
+			continue
+		}
+
+		tn, _ := tokenizer.TagName()
+		tagName := string(tn)
+
+		var level int
+		switch tagName {
+		case "h2":
+			level = 2
+		case "h3":
+			level = 3
+		case "h4":
+			level = 4
+		default:
+			continue
+		}
+
+		// Extract id attribute
+		var id string
+		for {
+			key, val, more := tokenizer.TagAttr()
+			if string(key) == "id" {
+				id = string(val)
+			}
+			if !more {
+				break
+			}
+		}
+		if id == "" {
+			continue
+		}
+
+		// Collect all text content until closing tag
+		var text strings.Builder
+		depth := 1
+		for depth > 0 {
+			next := tokenizer.Next()
+			switch next {
+			case html.TextToken:
+				text.Write(tokenizer.Text())
+			case html.StartTagToken:
+				depth++
+			case html.EndTagToken:
+				depth--
+			case html.ErrorToken:
+				depth = 0
+			}
+		}
+
+		items = append(items, TOCItem{
+			Text:  strings.TrimSpace(text.String()),
+			ID:    id,
+			Level: level,
+		})
+	}
+
+	return items
 }
 
 // htmlEscapeWriter wraps a bytes.Buffer to escape HTML output for CSS

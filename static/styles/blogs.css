@@ -21,29 +21,48 @@
   line-height: 1.6;
 }
 
-/* ---- BLOG TOOLBAR ---- */
-.blog-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
+/* ---- BLOG FILTERS ---- */
+.blog-filters {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 0.0625rem solid var(--border);
 }
 
-.blog-categories-wrapper {
+.blog-filters-row {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  flex: 1;
-  overflow-x: auto;
 }
 
-.filters-icon {
+/* ---- FILTER MODAL BUTTON ---- */
+.filter-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border: 0.0625rem solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg-card);
+  font-family: "Outfit", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--fg-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
   flex-shrink: 0;
-  color: var(--fg-muted);
-  font-size: 1rem;
+}
+
+.filter-modal-btn:hover {
+  border-color: var(--green-dim);
+  color: var(--fg);
+}
+
+.filter-active-dot {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--green);
 }
 
 /* ---- BLOG SEARCH ---- */
@@ -56,7 +75,9 @@
   border-radius: 0.5rem;
   background: var(--bg-card);
   transition: all 0.2s;
-  min-width: 16rem;
+  flex: 0 1 auto;
+  min-width: 10rem;
+  max-width: 20rem;
 }
 
 .blog-search:focus-within {
@@ -84,38 +105,224 @@
   color: var(--fg-muted);
 }
 
-/* ---- BLOG CATEGORIES ---- */
-.blog-categories {
+/* ---- FILTER MODAL ---- */
+.filter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.filter-modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.filter-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(0.25rem);
+}
+
+.filter-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 32rem;
+  max-height: 80vh;
+  background: var(--bg-card);
+  border: 0.0625rem solid var(--border);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.filter-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 0.0625rem solid var(--border);
+}
+
+.filter-modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 0;
+}
+
+.filter-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--fg-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-modal-close:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+
+.filter-modal-close i {
+  font-size: 1.125rem;
+}
+
+.filter-modal-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.filter-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-top: 0.0625rem solid var(--border);
+}
+
+/* ---- FILTER SECTIONS ---- */
+.filter-section {
+  margin-bottom: 1.5rem;
+}
+
+.filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.filter-section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 0 0 0.75rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03125rem;
+}
+
+/* ---- FILTER PILLS ---- */
+.filter-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.375rem;
 }
 
-.blog-category {
+.filter-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  gap: 0.375rem;
+  padding: 0.3rem 0.7rem;
   border: 0.0625rem solid var(--border);
   border-radius: 6.25rem;
-  font-size: 0.8rem;
+  font-size: 0.725rem;
   font-weight: 500;
   color: var(--fg-secondary);
-  background: var(--bg-card);
+  background: var(--bg);
+  font-family: "Outfit", sans-serif;
   text-decoration: none;
   transition: all 0.2s;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
-.blog-category span {
-  font-size: 0.7rem;
+.filter-pill span {
+  font-size: 0.6rem;
   font-weight: 600;
   color: var(--fg-muted);
 }
 
-.blog-category:hover {
+.filter-pill:hover {
   border-color: var(--green-dim);
   color: var(--fg);
-  box-shadow: 0 0 1rem var(--green-glow);
+  box-shadow: 0 0 0.75rem var(--green-glow);
+}
+
+.filter-pill.active {
+  border-color: var(--green);
+  color: var(--green);
+  background: var(--green-glow);
+}
+
+.filter-pill.active span {
+  color: var(--green);
+}
+
+.filter-pill--tag {
+  font-size: 0.675rem;
+  padding: 0.25rem 0.6rem;
+}
+
+/* ---- CLEAR FILTERS ---- */
+.clear-filters {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: all 0.15s;
+  border-radius: 0.375rem;
+  border: none;
+  background: transparent;
+}
+
+.clear-filters:hover {
+  color: var(--fg);
+  background: var(--bg-hover);
+}
+
+.clear-filters--modal {
+  padding: 0.625rem 0.875rem;
+  border: 0.0625rem solid var(--border);
+}
+
+.clear-filters--modal:hover {
+  border-color: var(--green-dim);
+}
+
+.clear-filters i {
+  font-size: 0.8rem;
+}
+
+/* ---- FILTER APPLY BUTTON ---- */
+.filter-apply-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  border: 0.0625rem solid var(--green);
+  border-radius: 0.5rem;
+  background: var(--green);
+  color: var(--btn-primary-fg);
+  font-family: "Outfit", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.filter-apply-btn:hover {
+  background: var(--green-dim);
+  border-color: var(--green-dim);
+  box-shadow: 0 0 0.75rem var(--green-glow);
 }
 
 /* ---- BLOG GRID ---- */
@@ -328,25 +535,17 @@
     margin-bottom: 2rem;
   }
 
-  .blog-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .blog-categories-wrapper {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .blog-categories-wrapper::-webkit-scrollbar {
-    display: none;
+  .blog-filters-row {
+    flex-wrap: wrap;
   }
 
   .blog-search {
-    min-width: unset;
-    width: 100%;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .filter-modal-content {
+    max-height: 85vh;
   }
 
   .blog-grid {
