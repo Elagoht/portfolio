@@ -23,6 +23,7 @@ type TechGroup struct {
 }
 
 type BlogCategory struct {
+	Slug   string
 	Name   string
 	Count  int
 	Href   string
@@ -30,6 +31,7 @@ type BlogCategory struct {
 }
 
 type BlogTag struct {
+	Slug   string
 	Name   string
 	Count  int
 	Href   string

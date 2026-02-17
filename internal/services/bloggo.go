@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"net/url"
 	"strings"
 	"time"
 
@@ -158,26 +159,28 @@ type ListPostsParams struct {
 // --- API methods ---
 
 func (s *BloggoService) ListPosts(ctx context.Context, params ListPostsParams) (*PostsResponse, error) {
-	path := "/api/posts?"
+	query := url.Values{}
 
 	if params.Page > 0 {
-		path += fmt.Sprintf("page=%d&", params.Page)
+		query.Set("page", fmt.Sprintf("%d", params.Page))
 	}
 	if params.Limit > 0 {
-		path += fmt.Sprintf("limit=%d&", params.Limit)
+		query.Set("limit", fmt.Sprintf("%d", params.Limit))
 	}
 	if params.Category != "" {
-		path += fmt.Sprintf("category=%s&", params.Category)
+		query.Set("category", params.Category)
 	}
 	if params.Tag != "" {
-		path += fmt.Sprintf("tag=%s&", params.Tag)
+		query.Set("tag", params.Tag)
 	}
 	if params.Author != "" {
-		path += fmt.Sprintf("author=%s&", params.Author)
+		query.Set("author", params.Author)
 	}
 	if params.Search != "" {
-		path += fmt.Sprintf("search=%s&", params.Search)
+		query.Set("search", params.Search)
 	}
+
+	path := "/api/posts?" + query.Encode()
 
 	var resp PostsResponse
 	if err := s.client.Get(ctx, path, &resp); err != nil {
@@ -257,13 +260,15 @@ func (s *BloggoService) GetAuthor(ctx context.Context, id int) (*AuthorDetail, e
 }
 
 func (s *BloggoService) GetKeyValues(ctx context.Context, key, starting string) ([]KeyValue, error) {
-	path := "/api/key-values?"
+	query := url.Values{}
 	if key != "" {
-		path += fmt.Sprintf("key=%s&", key)
+		query.Set("key", key)
 	}
 	if starting != "" {
-		path += fmt.Sprintf("starting=%s&", starting)
+		query.Set("starting", starting)
 	}
+
+	path := "/api/key-values?" + query.Encode()
 
 	var resp []KeyValue
 	if err := s.client.Get(ctx, path, &resp); err != nil {

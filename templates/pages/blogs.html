@@ -47,7 +47,7 @@
             <h3 class="filter-section-title">{{t .Lang "blogs.categories"}}</h3>
             <div class="filter-pills" data-filter-type="category">
               {{range .BlogCategories}}
-              <button type="button" class="filter-pill{{if .Active}} active{{end}}" data-filter-value="{{.Name}}">
+              <button type="button" class="filter-pill{{if .Active}} active{{end}}" data-filter-value="{{.Slug}}">
                 {{.Name}} <span>{{.Count}}</span>
               </button>
               {{end}}
@@ -60,7 +60,7 @@
             <h3 class="filter-section-title">{{t .Lang "blogs.tags"}}</h3>
             <div class="filter-pills" data-filter-type="tag">
               {{range .BlogTags}}
-              <button type="button" class="filter-pill filter-pill--tag{{if .Active}} active{{end}}" data-filter-value="{{.Name}}">
+              <button type="button" class="filter-pill filter-pill--tag{{if .Active}} active{{end}}" data-filter-value="{{.Slug}}">
                 {{.Name}} <span>{{.Count}}</span>
               </button>
               {{end}}

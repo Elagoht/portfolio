@@ -107,6 +107,7 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				href = buildFilterURL("", tag, search)
 			}
 			blogCategories = append(blogCategories, BlogCategory{
+				Slug:   cat.Slug,
 				Name:   cat.Name,
 				Count:  cat.PostCount,
 				Href:   href,
@@ -127,6 +128,7 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				href = buildFilterURL(category, "", search)
 			}
 			blogTags = append(blogTags, BlogTag{
+				Slug:   tg.Slug,
 				Name:   tg.Name,
 				Count:  tg.PostCount,
 				Href:   href,
