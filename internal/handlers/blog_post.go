@@ -9,6 +9,7 @@ import (
 
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
+	"github.com/yuin/goldmark/extension"
 
 	fwctx "statigo/framework/context"
 	"statigo/framework/templates"
@@ -144,9 +145,12 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func markdownToHTML(md string) template.HTML {
-	// Create goldmark instance with syntax highlighting
+	// Create goldmark instance with syntax highlighting and table support
 	mdParser := goldmark.New(
 		goldmark.WithExtensions(
+			extension.Table,
+			extension.Strikethrough,
+			extension.Linkify,
 			highlighting.NewHighlighting(
 				highlighting.WithStyle("dracula"),
 				highlighting.WithCSSWriter(htmlEscapeWriter{}),
