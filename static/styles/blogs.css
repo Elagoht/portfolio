@@ -154,6 +154,11 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  background-color: var(--green-dim);
+  color: var(--btn-primary-fg);
 }
 
 .blog-card:hover .blog-cover img {
