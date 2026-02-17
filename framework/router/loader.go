@@ -20,6 +20,7 @@ type RouteConfig struct {
 	Handler   string `json:"handler"`  // Handler name (e.g., "index", "content")
 	Title     string `json:"title"`    // Translation key for page title
 	Strategy  string `json:"strategy"` // Caching strategy: "static", "incremental", "dynamic", "immutable"
+	Interval  string `json:"interval"` // Revalidation interval for incremental strategy (e.g., "24h")
 }
 
 // RoutesConfig represents the complete routes configuration file.
@@ -48,9 +49,9 @@ func LoadRoutesFromJSON(
 		return fmt.Errorf("failed to parse routes JSON: %w", err)
 	}
 
-	logger.Info("Loading routes from JSON", "file", filePath, "count", len(config.Routes))
+	logger.Info("Loading routes from JSON", "file", filePath, "routes", len(config.Routes))
 
-	// Register each route
+	// Register each static route
 	for _, routeConfig := range config.Routes {
 		var handler http.HandlerFunc
 
@@ -124,6 +125,7 @@ func LoadRoutesFromJSON(
 			Template:  routeConfig.Template,
 			Title:     routeConfig.Title,
 			Strategy:  routeConfig.Strategy,
+			Interval:  routeConfig.Interval,
 		}); err != nil {
 			return fmt.Errorf("failed to add route %s: %w", routeConfig.Canonical, err)
 		}
@@ -134,6 +136,6 @@ func LoadRoutesFromJSON(
 			"template", routeConfig.Template)
 	}
 
-	logger.Info("Successfully loaded all routes", "count", len(config.Routes))
+	logger.Info("Successfully loaded all routes", "routes", len(config.Routes))
 	return nil
 }

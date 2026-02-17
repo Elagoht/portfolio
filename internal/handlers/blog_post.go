@@ -36,19 +36,24 @@ type BlogPostData struct {
 	Tags      []string
 	Canonical string
 	TOCItems  []TOCItem
+	ViewCount int
 }
 
 type BlogPostHandler struct {
-	renderer *templates.Renderer
-	bloggo   *services.BloggoService
-	apiBase  string
+	renderer     *templates.Renderer
+	bloggo       *services.BloggoService
+	apiBase      string
+	viewTracker  *services.ViewTracker
+	viewsHandler *ViewsHandler
 }
 
-func NewBlogPostHandler(renderer *templates.Renderer, bloggo *services.BloggoService, apiBase string) *BlogPostHandler {
+func NewBlogPostHandler(renderer *templates.Renderer, bloggo *services.BloggoService, apiBase string, viewTracker *services.ViewTracker, viewsHandler *ViewsHandler) *BlogPostHandler {
 	return &BlogPostHandler{
-		renderer: renderer,
-		bloggo:   bloggo,
-		apiBase:  apiBase,
+		renderer:     renderer,
+		bloggo:       bloggo,
+		apiBase:      apiBase,
+		viewTracker:  viewTracker,
+		viewsHandler: viewsHandler,
 	}
 }
 
@@ -78,10 +83,12 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Track view in background
+	// Track view in background (with IP-based cooldown)
 	go func() {
-		ua := r.Header.Get("User-Agent")
-		_ = h.bloggo.TrackView(r.Context(), slug, ua)
+		if h.viewTracker.ShouldTrackView(r, slug) {
+			ua := r.Header.Get("User-Agent")
+			_ = h.bloggo.TrackView(r.Context(), slug, ua)
+		}
 	}()
 
 	cover := ""
@@ -103,6 +110,15 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	content := markdownToHTML(post.Content)
 	tocItems := extractTOCItems(string(content))
 
+	// Fetch view count from cache
+	viewCount := 0
+	if h.viewsHandler != nil {
+		views, err := h.viewsHandler.Cache.Get()
+		if err == nil {
+			viewCount = views[slug]
+		}
+	}
+
 	blogPost := BlogPostData{
 		Slug:      slug,
 		Cover:     cover,
@@ -115,6 +131,7 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Tags:      tags,
 		Canonical: fwctx.GetCanonicalPath(r.Context()),
 		TOCItems:  tocItems,
+		ViewCount: viewCount,
 	}
 
 	data := BaseData(lang, t)

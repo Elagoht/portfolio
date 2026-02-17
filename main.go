@@ -129,20 +129,23 @@ func main() {
 		},
 	}, appLogger)
 	bloggoService := services.NewBloggoService(bloggoClient, appLogger)
+	viewTracker := services.NewViewTracker(appLogger)
+	viewsHandler := handlers.NewViewsHandler(bloggoService, 10*time.Minute)
 
 	// Initialize handlers
 	indexHandler := handlers.NewIndexHandler(renderer)
 	aboutHandler := handlers.NewAboutHandler(renderer)
 	blogsHandler := handlers.NewBlogsHandler(renderer, bloggoService, bloggoAPIURL)
-	blogPostHandler := handlers.NewBlogPostHandler(renderer, bloggoService, bloggoAPIURL)
+	blogPostHandler := handlers.NewBlogPostHandler(renderer, bloggoService, bloggoAPIURL, viewTracker, viewsHandler)
 	feedHandler := handlers.NewFeedHandler(bloggoService, bloggoAPIURL, baseURL)
 	notFoundHandler := handlers.NewNotFoundHandler(renderer)
 
 	// Create custom handlers map for route loader
 	customHandlers := map[string]http.HandlerFunc{
-		"index": indexHandler.ServeHTTP,
-		"blogs": blogsHandler.ServeHTTP,
-		"about": aboutHandler.ServeHTTP,
+		"index":    indexHandler.ServeHTTP,
+		"blogs":    blogsHandler.ServeHTTP,
+		"about":    aboutHandler.ServeHTTP,
+		"blogpost": blogPostHandler.ServeHTTP,
 	}
 
 	// Load routes from JSON configuration

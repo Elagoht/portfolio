@@ -15,6 +15,7 @@ type RouteDefinition struct {
 	Template  string           // Template name (e.g., "content.html")
 	Title     string           // Translation key for page title (e.g., "main.title")
 	Strategy  string           // Caching strategy: "static", "incremental", "dynamic", "immutable"
+	Interval  string           // Revalidation interval for incremental strategy (e.g., "24h")
 }
 
 // Registry maintains the mapping between canonical paths and route definitions.
