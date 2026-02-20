@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"net/http"
 	"time"
@@ -30,24 +29,6 @@ type rssItem struct {
 	Description string `xml:"description"`
 	PubDate     string `xml:"pubDate"`
 	GUID        string `xml:"guid"`
-}
-
-// JSON Feed 1.1 structs
-
-type jsonFeed struct {
-	Version     string         `json:"version"`
-	Title       string         `json:"title"`
-	HomePageURL string         `json:"home_page_url"`
-	FeedURL     string         `json:"feed_url"`
-	Items       []jsonFeedItem `json:"items"`
-}
-
-type jsonFeedItem struct {
-	ID            string `json:"id"`
-	URL           string `json:"url"`
-	Title         string `json:"title"`
-	DatePublished string `json:"date_published"`
-	Summary       string `json:"summary,omitempty"`
 }
 
 type FeedHandler struct {
@@ -103,49 +84,22 @@ func (h *FeedHandler) RSS(w http.ResponseWriter, r *http.Request) {
 	xml.NewEncoder(w).Encode(feed)
 }
 
-func (h *FeedHandler) JSON(w http.ResponseWriter, r *http.Request) {
-	posts, err := h.fetchPosts(r)
-	if err != nil {
-		http.Error(w, "Failed to fetch posts", http.StatusInternalServerError)
-		return
-	}
-
-	items := make([]jsonFeedItem, 0, len(posts))
-	for _, p := range posts {
-		summary := ""
-		if p.Description != nil {
-			summary = *p.Description
-		} else if p.Spot != nil {
-			summary = *p.Spot
-		}
-		items = append(items, jsonFeedItem{
-			ID:            h.siteURL + "/blogs/" + p.Slug,
-			URL:           h.siteURL + "/blogs/" + p.Slug,
-			Title:         p.Title,
-			DatePublished: p.PublishedAt.Format(time.RFC3339),
-			Summary:       summary,
-		})
-	}
-
-	feed := jsonFeed{
-		Version:     "https://jsonfeed.org/version/1.1",
-		Title:       SiteName,
-		HomePageURL: h.siteURL,
-		FeedURL:     h.siteURL + "/feed.json",
-		Items:       items,
-	}
-
-	w.Header().Set("Content-Type", "application/feed+json; charset=utf-8")
-	json.NewEncoder(w).Encode(feed)
-}
-
 func (h *FeedHandler) fetchPosts(r *http.Request) ([]services.PostSummary, error) {
-	resp, err := h.bloggo.ListPosts(r.Context(), services.ListPostsParams{
-		Page:  1,
-		Limit: 20,
-	})
-	if err != nil {
-		return nil, err
+	var all []services.PostSummary
+
+	for page := 1; ; page++ {
+		resp, err := h.bloggo.ListPosts(r.Context(), services.ListPostsParams{
+			Page:  page,
+			Limit: 100,
+		})
+		if err != nil || len(resp.Data) == 0 {
+			break
+		}
+		all = append(all, resp.Data...)
+		if len(resp.Data) < 100 {
+			break
+		}
 	}
-	return resp.Data, nil
+
+	return all, nil
 }

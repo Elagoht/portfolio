@@ -73,8 +73,8 @@ func main() {
 	// Convert to templates.SEOFunctions (same structure, different package)
 	seoFuncs := &templates.SEOFunctions{
 		CanonicalURL:   routerSEOFuncs.CanonicalURL,
-		AlternateLinks:  routerSEOFuncs.AlternateLinks,
-		AlternateURLs:   routerSEOFuncs.AlternateURLs,
+		AlternateLinks: routerSEOFuncs.AlternateLinks,
+		AlternateURLs:  routerSEOFuncs.AlternateURLs,
 		LocalePath:     routerSEOFuncs.LocalePath,
 	}
 
@@ -194,6 +194,13 @@ func main() {
 		"/phpMyAdmin", "/administrator", "/cpanel",
 	}
 
+	// Load redirects
+	redirectRegistry, err := middleware.LoadRedirectsFromJSON(configFS, "redirects.json", appLogger)
+	if err != nil {
+		appLogger.Error("Failed to load redirects", "error", err)
+		os.Exit(1)
+	}
+
 	// Apply middleware
 	r.Use(middleware.StructuredLogger(appLogger))
 	r.Use(chiMiddleware.Recoverer)
@@ -203,6 +210,7 @@ func main() {
 		RPS:   rateLimitRPS,
 		Burst: rateLimitBurst,
 	}))
+	r.Use(middleware.RedirectMiddleware(redirectRegistry, appLogger))
 	r.Use(middleware.Compression())
 	r.Use(middleware.SecurityHeadersSimple())
 	r.Use(middleware.CachingHeaders(devMode))
@@ -232,7 +240,6 @@ func main() {
 
 	// Feed routes
 	r.Get("/rss", feedHandler.RSS)
-	r.Get("/feed.json", feedHandler.JSON)
 	r.Get("/sitemap.xml", sitemapHandler.ServeHTTP)
 
 	// Blog post wildcard route (must be registered after main routes)

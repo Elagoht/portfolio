@@ -46,7 +46,6 @@ var SiteLinks = []Link{
 	{Title: "Reddit", Href: "https://reddit.com/u/furkanbytekin"},
 	{Title: "Spotify", Href: "https://open.spotify.com/user/furkanbytekin"},
 	{Title: "RSS", Href: "/rss"},
-	{Title: "JSON Feed", Href: "/feed.json"},
 }
 
 func footerGroups(t func(string) string) []LinkGroup {
@@ -73,7 +72,6 @@ func footerGroups(t func(string) string) []LinkGroup {
 				{Title: "YouTube", Href: "https://youtube.com/@furkanbytekin"},
 				{Title: "GitHub", Href: "https://github.com/Elagoht"},
 				{Title: "RSS", Href: "/rss"},
-				{Title: "JSON Feed", Href: "/feed.json"},
 			},
 		},
 	}
