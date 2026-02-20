@@ -37,6 +37,7 @@
       href="/android-chrome-512x512.png"
     />
     <meta name="theme-color" content="#ffffff" />
+    <link rel="manifest" href="/manifest.json" />
     {{/* Preconnect to external origins */}}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -60,9 +61,6 @@
     {{template "header" .}}
     <main>{{block "main" .}}{{end}}</main>
     {{template "footer" .}}
-
-    {{/* Main JavaScript */}}
-    <script defer src="/scripts/main.js"></script>
 
     {{/* Page-specific footer scripts */}} {{block "footer-scripts" .}}{{end}}
   </body>
