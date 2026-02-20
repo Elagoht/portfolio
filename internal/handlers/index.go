@@ -86,7 +86,7 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	data["Stats"] = []Stat{
 		{Number: "160+", Label: t("stats.blogPosts"), Href: "/blogs"},
 		{Number: "90+", Label: t("stats.youtubeVideos"), Href: "https://www.youtube.com/@furkanbytekin"},
-		{Number: "12", Label: t("stats.languages"), Href: "/about"},
+		{Number: "16", Label: t("stats.languages"), Href: "/about"},
 		{Number: "1", Label: t("stats.udemyCourse"), Href: "https://www.udemy.com/user/furkan-baytekin/"},
 	}
 	data["AboutHeading"] = t("index.aboutHeading")
