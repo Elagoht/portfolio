@@ -30,6 +30,7 @@ type BlogPostData struct {
 	Title     string
 	Category  string
 	Date      string
+	DateISO   string
 	ReadTime  string
 	Excerpt   string
 	Content   template.HTML
@@ -125,6 +126,7 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Title:     post.Title,
 		Category:  post.Category.Name,
 		Date:      post.PublishedAt.Format("January 2, 2006"),
+		DateISO:   post.PublishedAt.Format("2006-01-02"),
 		ReadTime:  strconv.Itoa(post.ReadTime),
 		Excerpt:   excerpt,
 		Content:   content,
@@ -141,6 +143,43 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		"description": blogPost.Excerpt,
 	}
 	data["BlogPost"] = blogPost
+	data["JSONLD"] = mustMarshalJSON(struct {
+		Context       string `json:"@context"`
+		Type          string `json:"@type"`
+		Headline      string `json:"headline"`
+		Description   string `json:"description,omitempty"`
+		Image         string `json:"image,omitempty"`
+		DatePublished string `json:"datePublished"`
+		URL           string `json:"url"`
+		Author        struct {
+			Type string `json:"@type"`
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"author"`
+		Publisher struct {
+			Type string `json:"@type"`
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"publisher"`
+	}{
+		Context:       "https://schema.org",
+		Type:          "BlogPosting",
+		Headline:      blogPost.Title,
+		Description:   blogPost.Excerpt,
+		Image:         blogPost.Cover,
+		DatePublished: blogPost.DateISO,
+		URL:           SiteBaseURL + blogPost.Canonical,
+		Author: struct {
+			Type string `json:"@type"`
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		}{Type: "Person", Name: SiteName, URL: SiteBaseURL},
+		Publisher: struct {
+			Type string `json:"@type"`
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		}{Type: "Person", Name: SiteName, URL: SiteBaseURL},
+	})
 
 	// Fetch related posts (same category)
 	related, err := h.bloggo.ListPosts(r.Context(), services.ListPostsParams{

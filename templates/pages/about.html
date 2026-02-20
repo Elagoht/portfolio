@@ -1,14 +1,18 @@
-{{template "base" .}}
-
-{{define "page-css"}}
+{{template "base" .}} {{define "page-css"}}
 <link rel="stylesheet" href="/styles/about.css" />
-{{end}}
-
-{{define "main"}}
+{{end}} {{define "extra-head"}}
+<script type="application/ld+json">
+  {{.JSONLD}}
+</script>
+{{end}} {{define "main"}}
 <div class="container">
   <section class="about-page">
     <div class="about-content">
-      <img src="/android-chrome-512x512.png" alt="" class="about-avatar" />
+      <img
+        src="/android-chrome-512x512.png"
+        alt="Furkan Baytekin"
+        class="about-avatar"
+      />
       <div class="about-text-content">
         <h1 class="about-page-heading">{{t .Lang "sections.about"}}</h1>
         <p class="about-text">{{.AboutText}}</p>

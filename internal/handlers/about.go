@@ -101,6 +101,35 @@ func (h *AboutHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		{University: "Anadolu University", Programme: "Web Design and Development (A.D.)", Date: "2021 - 2023"},
 		{University: "Gazi University", Programme: "Turkish Language Education (B.A.)", Date: "2019 - 2023"},
 	}
+	data["JSONLD"] = mustMarshalJSON(struct {
+		Context     string   `json:"@context"`
+		Type        string   `json:"@type"`
+		Name        string   `json:"name"`
+		URL         string   `json:"url"`
+		Email       string   `json:"email"`
+		Description string   `json:"description"`
+		JobTitle    string   `json:"jobTitle"`
+		SameAs      []string `json:"sameAs"`
+		KnowsAbout  []string `json:"knowsAbout"`
+	}{
+		Context:     "https://schema.org",
+		Type:        "Person",
+		Name:        SiteName,
+		URL:         SiteBaseURL,
+		Email:       SiteEmail,
+		Description: t("about.text"),
+		JobTitle:    "Lead Product Developer",
+		SameAs: []string{
+			"https://github.com/Elagoht",
+			"https://linkedin.com/in/furkan-baytekin",
+			"https://youtube.com/@furkanbytekin",
+			"https://x.com/furkanbytekin",
+		},
+		KnowsAbout: []string{
+			"Go", "TypeScript", "JavaScript", "React", "Next.js",
+			"Docker", "PostgreSQL", "Redis", "System Design", "CI/CD",
+		},
+	})
 
 	h.renderer.Render(w, "about.html", data)
 }

@@ -97,5 +97,29 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		{Icon: "ti ti-book", Title: t("index.hobbyBooksTitle"), Description: t("index.hobbyBooksDesc")},
 		{Icon: "ti ti-device-gamepad-2", Title: t("index.hobbyGameJamsTitle"), Description: t("index.hobbyGameJamsDesc")},
 	}
+	data["JSONLD"] = mustMarshalJSON(struct {
+		Context     string   `json:"@context"`
+		Type        string   `json:"@type"`
+		Name        string   `json:"name"`
+		URL         string   `json:"url"`
+		Email       string   `json:"email"`
+		Description string   `json:"description"`
+		JobTitle    string   `json:"jobTitle"`
+		SameAs      []string `json:"sameAs"`
+	}{
+		Context:     "https://schema.org",
+		Type:        "Person",
+		Name:        SiteName,
+		URL:         SiteBaseURL,
+		Email:       SiteEmail,
+		Description: t("hero.subtitle"),
+		JobTitle:    "Lead Product Developer",
+		SameAs: []string{
+			"https://github.com/Elagoht",
+			"https://linkedin.com/in/furkan-baytekin",
+			"https://youtube.com/@furkanbytekin",
+			"https://x.com/furkanbytekin",
+		},
+	})
 	h.renderer.Render(w, "index.html", data)
 }

@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="/styles/blog-post.css" />
 {{end}}
 
+{{define "extra-head"}}
+<script type="application/ld+json">{{.JSONLD}}</script>
+{{end}}
+
 {{define "title"}}
 {{.BlogPost.Title}} | Furkan Baytekin
 {{end}}

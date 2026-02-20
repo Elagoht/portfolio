@@ -1,5 +1,26 @@
 package handlers
 
+import (
+	"encoding/json"
+	"html/template"
+	"os"
+)
+
+var SiteBaseURL = func() string {
+	if u := os.Getenv("BASE_URL"); u != "" {
+		return u
+	}
+	return "http://localhost:8080"
+}()
+
+func mustMarshalJSON(v any) template.HTML {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return ""
+	}
+	return template.HTML(b)
+}
+
 type Link struct {
 	Title string
 	Href  string

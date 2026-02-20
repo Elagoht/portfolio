@@ -246,6 +246,33 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		data["NextPage"] = ""
 	}
 	data["PageNumbers"] = pageNumbers
+	data["JSONLD"] = mustMarshalJSON(struct {
+		Context     string `json:"@context"`
+		Type        string `json:"@type"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		URL         string `json:"url"`
+		Author      struct {
+			Type string `json:"@type"`
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"author"`
+	}{
+		Context:     "https://schema.org",
+		Type:        "Blog",
+		Name:        t("pages.blogs.title"),
+		Description: t("sections.blogsDescription"),
+		URL:         SiteBaseURL + "/blogs",
+		Author: struct {
+			Type string `json:"@type"`
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		}{
+			Type: "Person",
+			Name: SiteName,
+			URL:  SiteBaseURL,
+		},
+	})
 
 	h.renderer.Render(w, "blogs.html", data)
 }
