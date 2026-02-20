@@ -27,7 +27,7 @@
     {
       "canonical": "/blogs/{slug}",
       "path": "/blogs/{slug}",
-      "strategy": "dynamic",
+      "strategy": "static",
       "template": "blog-post.html",
       "handler": "blogpost"
     }

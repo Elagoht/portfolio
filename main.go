@@ -20,6 +20,7 @@ import (
 	"github.com/joho/godotenv"
 
 	"statigo/framework/cache"
+	"statigo/framework/cli"
 	"statigo/framework/client"
 	"statigo/framework/dictionary"
 	"statigo/framework/health"
@@ -261,6 +262,54 @@ func main() {
 	// Set router on cache manager for revalidation
 	if cacheManager != nil {
 		cacheManager.SetRouter(r)
+	}
+
+	// Handle CLI commands (prerender, clear-cache, etc.)
+	if cli.ShouldRunCommand() && cacheManager != nil {
+		blogExpander := func(ctx context.Context, canonical string) ([]string, error) {
+			var paths []string
+			page := 1
+			const limit = 100
+			prefix := canonical[:strings.Index(canonical, "{")]
+			for {
+				resp, err := bloggoService.ListPosts(ctx, services.ListPostsParams{
+					Page:  page,
+					Limit: limit,
+				})
+				if err != nil {
+					return nil, err
+				}
+				for _, post := range resp.Data {
+					paths = append(paths, prefix+post.Slug)
+				}
+				if len(paths) >= resp.Total {
+					break
+				}
+				page++
+			}
+			return paths, nil
+		}
+
+		cliApp := cli.New()
+		cliApp.Register(cli.NewPrerenderCommand(cli.PrerenderCommandConfig{
+			ConfigFS:     configFS,
+			RoutesFile:   "routes.json",
+			Languages:    []string{"en"},
+			Router:       r,
+			CacheManager: cacheManager,
+			Logger:       appLogger,
+			PathExpander: blogExpander,
+		}))
+		cliApp.Register(cli.NewClearCacheCommand(cli.ClearCacheCommandConfig{
+			CacheDir: cacheDir,
+			Logger:   appLogger,
+		}))
+
+		if err := cliApp.Execute(os.Args[1:]); err != nil {
+			appLogger.Error("Command failed", "error", err)
+			os.Exit(1)
+		}
+		return
 	}
 
 	// Start server

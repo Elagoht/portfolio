@@ -20,6 +20,7 @@ type PrerenderCommandConfig struct {
 	Router       http.Handler
 	CacheManager *cache.Manager
 	Logger       *slog.Logger
+	PathExpander func(ctx context.Context, canonical string) ([]string, error)
 }
 
 // NewPrerenderCommand creates a new prerender command.
@@ -32,11 +33,12 @@ func NewPrerenderCommand(config PrerenderCommandConfig) *Command {
 			config.Logger.Info("Starting cache pre-rendering...")
 
 			if err := config.CacheManager.Bootstrap(context.Background(), cache.RebuildConfig{
-				ConfigFS:   config.ConfigFS,
-				RoutesFile: config.RoutesFile,
-				Languages:  config.Languages,
-				Router:     config.Router,
-				Logger:     config.Logger,
+				ConfigFS:     config.ConfigFS,
+				RoutesFile:   config.RoutesFile,
+				Languages:    config.Languages,
+				Router:       config.Router,
+				Logger:       config.Logger,
+				PathExpander: config.PathExpander,
 			}); err != nil {
 				return fmt.Errorf("pre-rendering failed: %w", err)
 			}
