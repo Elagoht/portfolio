@@ -16,11 +16,7 @@
   <img src="/android-chrome-512x512.png" alt="Furkan Baytekin" class="hero-avatar">
   <h1 class="hero-name">{{.AboutHeading}}</h1>
   <div class="hero-titles">
-    {{range .Titles}}<span class="hero-title">{{.}}</span>{{end}}
-  </div>
-  <div class="hero-badge">
-    <span class="dot"></span>
-    {{t .Lang "hero.badge"}}
+    {{range .Titles}}<span class="hero-title"><i class="{{.Icon}}"></i>{{.Label}}</span>{{end}}
   </div>
   <p class="hero-sub">{{.AboutText}}</p>
 

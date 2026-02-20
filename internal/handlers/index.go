@@ -57,6 +57,11 @@ type Education struct {
 	Date       string
 }
 
+type Title struct {
+	Icon  string
+	Label string
+}
+
 type Hobby struct {
 	Icon        string
 	Title       string
@@ -76,7 +81,12 @@ func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	data["Meta"] = map[string]string{
 		"description": t("hero.subtitle"),
 	}
-	data["Titles"] = []string{"Lead Product Developer", "Fullstack Developer"}
+	data["Titles"] = []Title{
+		{Icon: "ti ti-code", Label: "Fullstack Developer"},
+		{Icon: "ti ti-brand-open-source", Label: "Open Sourcerer"},
+		{Icon: "ti ti-device-gamepad-2", Label: "Game Developer"},
+		{Icon: "ti ti-music", Label: "Vibe Musician"},
+	}
 	data["HeroLinks"] = []Link{
 		{Title: "GitHub", Href: "https://github.com/Elagoht"},
 		{Title: "LinkedIn", Href: "https://linkedin.com/in/furkan-baytekin"},
