@@ -3,6 +3,7 @@ package router
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi"
 )
@@ -61,6 +62,33 @@ func (r *Registry) GetByCanonical(canonical string) *RouteDefinition {
 	return r.canonicalMap[canonical]
 }
 
+// GetByPathPattern returns the first route definition whose path is a pattern
+// (contains "{param}" segments or ends with "/*") that matches the given path.
+func (r *Registry) GetByPathPattern(path string) *RouteDefinition {
+	pathParts := strings.Split(strings.Trim(path, "/"), "/")
+	for i := range r.routes {
+		route := &r.routes[i]
+		routeParts := strings.Split(strings.Trim(route.Path, "/"), "/")
+		if len(routeParts) != len(pathParts) {
+			continue
+		}
+		match := true
+		for j, part := range routeParts {
+			if strings.HasPrefix(part, "{") && strings.HasSuffix(part, "}") {
+				continue
+			}
+			if part != pathParts[j] {
+				match = false
+				break
+			}
+		}
+		if match {
+			return route
+		}
+	}
+	return nil
+}
+
 // GetAll returns all registered routes.
 func (r *Registry) GetAll() []RouteDefinition {
 	return r.routes
@@ -81,8 +109,8 @@ func (r *Registry) RegisterRoutes(router chi.Router, canonicalMiddleware func(ht
 		// Register the path
 		router.Get(route.Path, handlerFunc)
 
-		// Also register with trailing slash
-		if route.Path != "/" {
+		// Also register with trailing slash (skip for parameterized/wildcard paths)
+		if route.Path != "/" && !strings.HasSuffix(route.Path, "*") && !strings.Contains(route.Path, "{") {
 			router.Get(route.Path+"/", handlerFunc)
 		}
 	}

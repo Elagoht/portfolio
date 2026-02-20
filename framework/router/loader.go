@@ -53,6 +53,21 @@ func LoadRoutesFromJSON(
 
 	// Register each static route
 	for _, routeConfig := range config.Routes {
+		// Strategy-only entries (no handler) are stored in the registry for
+		// wildcard pattern lookups but are not registered as chi routes.
+		if routeConfig.Handler == "" {
+			if err := registry.AddRoute(RouteDefinition{
+				Path:     routeConfig.Path,
+				Strategy: routeConfig.Strategy,
+			}); err != nil {
+				return fmt.Errorf("failed to add route %s: %w", routeConfig.Path, err)
+			}
+			logger.Debug("Registered strategy-only route",
+				"path", routeConfig.Path,
+				"strategy", routeConfig.Strategy)
+			continue
+		}
+
 		var handler http.HandlerFunc
 
 		// Determine which handler to use

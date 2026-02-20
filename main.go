@@ -242,9 +242,6 @@ func main() {
 	r.Get("/rss", feedHandler.RSS)
 	r.Get("/sitemap.xml", sitemapHandler.ServeHTTP)
 
-	// Blog post wildcard route (must be registered after main routes)
-	r.Get("/blogs/*", blogPostHandler.ServeHTTP)
-
 	// 404 handler
 	r.NotFound(notFoundHandler.ServeHTTP)
 

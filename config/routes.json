@@ -11,7 +11,7 @@
     {
       "canonical": "/blogs",
       "path": "/blogs",
-      "strategy": "static",
+      "strategy": "dynamic",
       "template": "blogs.html",
       "handler": "blogs",
       "title": "pages.blogs.title"
@@ -23,6 +23,13 @@
       "template": "about.html",
       "handler": "about",
       "title": "pages.about.title"
+    },
+    {
+      "canonical": "/blogs/{slug}",
+      "path": "/blogs/{slug}",
+      "strategy": "dynamic",
+      "template": "blog-post.html",
+      "handler": "blogpost"
     }
   ]
 }
