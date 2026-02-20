@@ -13,12 +13,12 @@ var SiteBaseURL = func() string {
 	return "http://localhost:8080"
 }()
 
-func mustMarshalJSON(v any) template.HTML {
+func mustMarshalJSON(v any) template.JS {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return ""
 	}
-	return template.HTML(b)
+	return template.JS(b)
 }
 
 type Link struct {
