@@ -105,7 +105,7 @@
     <div class="blog-pagination">
       <a href="{{.PrevPage}}" class="pagination-link pagination-prev {{if not .HasPrev}}disabled{{end}}">
         <i class="ti ti-chevron-left"></i>
-        {{t .Lang "blogs.previous"}}
+        <span class="pagination-label">{{t .Lang "blogs.previous"}}</span>
       </a>
       <div class="pagination-pages">
         {{range .PageNumbers}}
@@ -119,7 +119,7 @@
         {{end}}
       </div>
       <a href="{{.NextPage}}" class="pagination-link pagination-next {{if not .HasNext}}disabled{{end}}">
-        {{t .Lang "blogs.next"}}
+        <span class="pagination-label">{{t .Lang "blogs.next"}}</span>
         <i class="ti ti-chevron-right"></i>
       </a>
     </div>

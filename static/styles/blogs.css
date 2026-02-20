@@ -582,18 +582,26 @@
     margin-bottom: 0.5rem;
   }
 
+  .pagination-label {
+    display: none;
+  }
+
+  .pagination-link {
+    padding: 0.5rem 0.625rem;
+  }
+
   .pagination-pages {
     gap: 0.15rem;
   }
 
   .pagination-number {
-    min-width: 2rem;
+    min-width: 1.875rem;
     height: 1.875rem;
     font-size: 0.75rem;
+    padding: 0 0.25rem;
   }
 
-  .pagination-link {
-    font-size: 0.75rem;
-    padding: 0.45rem 0.75rem;
+  .pagination-ellipsis {
+    display: none;
   }
 }

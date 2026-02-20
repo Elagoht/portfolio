@@ -195,7 +195,7 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var pageNumbers []PageNumber
-	for i := 1; i <= totalPages; i++ {
+	addPage := func(i int) {
 		isCurrent := i == currentPage
 		href := ""
 		if !isCurrent {
@@ -206,6 +206,31 @@ func (h *BlogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			Href:      href,
 			IsCurrent: isCurrent,
 		})
+	}
+	addEllipsis := func() {
+		pageNumbers = append(pageNumbers, PageNumber{IsEllipsis: true})
+	}
+
+	const delta = 2
+	if totalPages <= 2*delta+5 {
+		for i := 1; i <= totalPages; i++ {
+			addPage(i)
+		}
+	} else {
+		left := currentPage - delta
+		right := currentPage + delta
+
+		addPage(1)
+		if left > 2 {
+			addEllipsis()
+		}
+		for i := max(2, left); i <= min(totalPages-1, right); i++ {
+			addPage(i)
+		}
+		if right < totalPages-1 {
+			addEllipsis()
+		}
+		addPage(totalPages)
 	}
 
 	data["HasPrev"] = currentPage > 1
