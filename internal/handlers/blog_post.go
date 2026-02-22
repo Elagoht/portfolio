@@ -13,7 +13,8 @@ import (
 	highlighting "github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
-	"golang.org/x/net/html"
+	goldmarkHTML "github.com/yuin/goldmark/renderer/html"
+	nethtml "golang.org/x/net/html"
 
 	fwctx "statigo/framework/context"
 	"statigo/framework/templates"
@@ -243,6 +244,9 @@ func markdownToHTML(md string) template.HTML {
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),
+		goldmark.WithRendererOptions(
+			goldmarkHTML.WithUnsafe(),
+		),
 	)
 
 	var buf bytes.Buffer
@@ -254,14 +258,14 @@ func markdownToHTML(md string) template.HTML {
 
 func extractTOCItems(htmlContent string) []TOCItem {
 	var items []TOCItem
-	tokenizer := html.NewTokenizer(strings.NewReader(htmlContent))
+	tokenizer := nethtml.NewTokenizer(strings.NewReader(htmlContent))
 
 	for {
 		tt := tokenizer.Next()
-		if tt == html.ErrorToken {
+		if tt == nethtml.ErrorToken {
 			break
 		}
-		if tt != html.StartTagToken {
+		if tt != nethtml.StartTagToken {
 			continue
 		}
 
@@ -301,13 +305,13 @@ func extractTOCItems(htmlContent string) []TOCItem {
 		for depth > 0 {
 			next := tokenizer.Next()
 			switch next {
-			case html.TextToken:
+			case nethtml.TextToken:
 				text.Write(tokenizer.Text())
-			case html.StartTagToken:
+			case nethtml.StartTagToken:
 				depth++
-			case html.EndTagToken:
+			case nethtml.EndTagToken:
 				depth--
-			case html.ErrorToken:
+			case nethtml.ErrorToken:
 				depth = 0
 			}
 		}
