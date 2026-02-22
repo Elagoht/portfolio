@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"bytes"
+	"context"
 	"html/template"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
@@ -83,14 +85,6 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.renderer.Render(w, "notfound.html", data)
 		return
 	}
-
-	// Track view in background (with IP-based cooldown)
-	go func() {
-		if h.viewTracker.ShouldTrackView(r, slug) {
-			ua := r.Header.Get("User-Agent")
-			_ = h.bloggo.TrackView(r.Context(), slug, ua)
-		}
-	}()
 
 	cover := ""
 	if post.CoverImage != nil {
@@ -211,6 +205,28 @@ func (h *BlogPostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.renderer.Render(w, "blog-post.html", data)
+}
+
+// ViewTrackingMiddleware tracks blog post views before the cache layer,
+// so view counts are incremented even when serving cached responses.
+func (h *BlogPostHandler) ViewTrackingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := r.URL.Path
+		if strings.HasPrefix(path, "/blogs/") {
+			slug := strings.TrimSuffix(strings.TrimPrefix(path, "/blogs/"), "/")
+			if slug != "" {
+				ua := r.Header.Get("User-Agent")
+				go func() {
+					if h.viewTracker.ShouldTrackView(r, slug) {
+						ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+						defer cancel()
+						_ = h.bloggo.TrackView(ctx, slug, ua)
+					}
+				}()
+			}
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 func markdownToHTML(md string) template.HTML {

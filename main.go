@@ -231,6 +231,9 @@ func main() {
 	// Canonical path middleware
 	r.Use(router.CanonicalPathMiddleware(routeRegistry))
 
+	// View tracking middleware (runs before cache, so views are counted on cache hits too)
+	r.Use(blogPostHandler.ViewTrackingMiddleware)
+
 	// Cache middleware (skip disk cache in dev mode)
 	if !devMode {
 		r.Use(middleware.CacheMiddleware(cacheManager, appLogger))
